@@ -1,0 +1,4 @@
+.metadata/*
+GameProject/.settings/*
+GameProject/.classpath
+GameProject/.project
