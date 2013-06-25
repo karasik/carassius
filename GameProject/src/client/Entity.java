@@ -15,14 +15,33 @@ public class Entity {
 	static int width = 50;
 	static int height = 50;
 	
-	Entity(Tile tile) {
-		this.tile = tile;
+	Entity() {
 		parametrs = new TreeMap<String, String>();
+	}
+	
+	void setTile(Tile tile) {
+		this.tile = tile;
 	}
 	
 	void setPosition(Point point) {
 		parametrs.put("coordx", point.x + "");
 		parametrs.put("coordy", point.y + "");
+	}
+	
+	void setParametr(String key, String value) {
+		parametrs.put(key, value);
+	}
+	
+	String getParametr(String key) {
+		return parametrs.get(key);
+	}
+	
+	void setX(String x) {
+		parametrs.put("coordx", x);
+	}
+	
+	void setY(String y) {
+		parametrs.put("coordy", y);
 	}
 	
 	Point getPosition() {
