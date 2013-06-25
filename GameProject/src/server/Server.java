@@ -14,14 +14,14 @@ public class Server {
 	public Server(int n, int m) {
 		map = new Map(n, m);
 		playerSockets = new ArrayList<Socket>();
-		button = new char[Const.NUM_PLAYERS];
-		wasButton = new boolean[Const.NUM_PLAYERS];
+		button = new char[Global.NUM_PLAYERS];
+		wasButton = new boolean[Global.NUM_PLAYERS];
 	}
 	
 	public void start() throws IOException, InterruptedException {
 		// поднимаю сервер и жду пока все клиенты подключатся
 		ServerSocket s = new ServerSocket(8080);
-		for (int i=0; i<Const.NUM_PLAYERS; i++) {
+		for (int i=0; i<Global.NUM_PLAYERS; i++) {
 			playerSockets.add(s.accept());
 			// здесь нужно сделать игрока соответствующего класса
 			map.addWarrior(i);

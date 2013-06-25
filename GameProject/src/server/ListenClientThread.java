@@ -30,7 +30,7 @@ public class ListenClientThread extends Thread {
 					wasButton[clientId] = true;
 				}
 				
-				Thread.sleep(100);
+				Thread.sleep(10);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

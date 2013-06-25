@@ -44,7 +44,8 @@ public class TicLoopThread extends Thread {
 				}				
 				
 				
-				Thread.sleep(120);
+				Thread.sleep(10);
+				Global.time++;
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -52,24 +53,29 @@ public class TicLoopThread extends Thread {
 	}
 
 	private void makePlayersTurns() {
-		for (int i=0; i<Const.NUM_PLAYERS; i++) {
+		for (int i=0; i<Global.NUM_PLAYERS; i++) {
 			if (!wasButton[i]) continue;
+			boolean success = false;
 			switch (button[i]) {
 			case 'w':
-				map.tryToChangeCreatureCoordDiff(map.getPlayer(i), 0, -1);
+				success = map.tryToChangeCreatureCoordDiff(map.getPlayer(i), 0, -1);
 				break;
 			case 'a':
-				map.tryToChangeCreatureCoordDiff(map.getPlayer(i), -1, 0);
+				success = map.tryToChangeCreatureCoordDiff(map.getPlayer(i), -1, 0);
 				break;
 			case 's':
-				map.tryToChangeCreatureCoordDiff(map.getPlayer(i), 0, 1);
+				success = map.tryToChangeCreatureCoordDiff(map.getPlayer(i), 0, 1);
 				break;
 			case 'd':
-				map.tryToChangeCreatureCoordDiff(map.getPlayer(i), 1, 0);
+				success = map.tryToChangeCreatureCoordDiff(map.getPlayer(i), 1, 0);
 				break;
+			default:
+				success = true;
 			}
-			synchronized (wasButton) {
-				wasButton[i] = false;
+			if (success) {
+				synchronized (wasButton) {
+					wasButton[i] = false;
+				}
 			}
 		}
 	}

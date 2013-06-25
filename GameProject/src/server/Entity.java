@@ -5,7 +5,7 @@ import java.util.TreeMap;
 
 public class Entity {
 	private int globalId;
-	private static int nextGlobalId = Integer.MIN_VALUE;
+	private static int nextGlobalId = 0;
 	private TreeMap<String, String> parameters;
 	
 	public Entity() {
@@ -52,6 +52,10 @@ public class Entity {
 	
 	public boolean equals(Object o) {
 		return globalId == ((Entity)o).globalId;
+	}
+	
+	public int getGlobalId() {
+		return globalId;
 	}
 	
 }

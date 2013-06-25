@@ -33,7 +33,7 @@ public class TileContainer {
 	}
 
 	public boolean isVisibleBy(Entity entity) {
-		return Math.hypot(tile.getX() - entity.getX(), tile.getY() - entity.getY()) <= Const.VISIBLE_DISTANCE;
+		return Math.hypot(tile.getX() - entity.getX(), tile.getY() - entity.getY()) <= Global.VISIBLE_DISTANCE;
 	}
 
 	public void addCreature(Creature c) {
@@ -46,5 +46,9 @@ public class TileContainer {
 
 	public void removeCreature(Creature c) {
 		creatures.remove(c);
+	}
+	
+	public Tile getTile() {
+		return tile;
 	}
 }

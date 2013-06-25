@@ -1,11 +1,13 @@
 package server;
 
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 public class Map {
 	private TileContainer[][] tileMatrix;
 	private ArrayList<TileContainer> tileList;
 	private ArrayList<Player> players;
+	private TreeMap<Integer, Tile> tileMap;
 	
 	public Map(int n, int m) {
 		tileMatrix = MapGenerator.generateNormalMap(n, m);
@@ -16,6 +18,10 @@ public class Map {
 			}
 		}
 		players = new ArrayList<Player>();
+		tileMap = new TreeMap<Integer, Tile>();
+		for (TileContainer c : tileList) {
+			tileMap.put(c.getTile().getGlobalId(), c.getTile());
+		}
 	}
 	
 	public TileContainer[][] getTileMatrix() {
@@ -38,12 +44,13 @@ public class Map {
 		return players.get(i);
 	}
 
-	public void tryToChangeCreatureCoordDiff(Creature c, int dx, int dy) {
+	public boolean tryToChangeCreatureCoordDiff(Creature c, int dx, int dy) {
 		int x = c.getX(), y = c.getY();
 		if (tileMatrix[x + dx][y + dy].isWalkable()) {
 			tileMatrix[x + dx][y + dy].addCreature(c);
 			tileMatrix[x][y].removeCreature(c);
-			c.setCoord(x + dx, y + dy);
+			return c.moveTo(x + dx, y + dy);
 		}
+		return false;
 	}
 }
