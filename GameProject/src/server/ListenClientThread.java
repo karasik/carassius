@@ -29,6 +29,7 @@ public class ListenClientThread extends Thread {
 				synchronized (wasButton) {					
 					wasButton[clientId] = true;
 				}
+				
 				Thread.sleep(100);
 			}
 		} catch (Exception e) {
