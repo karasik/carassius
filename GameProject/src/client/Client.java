@@ -21,7 +21,6 @@ class Global {
 	static PrintWriter socketWriter = null;
 	
 	static Tile[] tiles = null;
-	
 }
 
 public class Client {
@@ -31,6 +30,9 @@ public class Client {
 	
 	FrameEventsProcessor eventsProcessor = 
 			new FrameEventsProcessor();
+	
+	MouseProcessor mouseProcessor = 
+			new MouseProcessor();
 	
 	public Client() throws IOException {
 		
@@ -45,8 +47,6 @@ public class Client {
 //		Point point = new Point(300, 100);
 //		e.setPosition(point);
 		
-		
-		
 		Global.cameraPosition = new Point(0, 0);
 		Global.visibleFrame = new Rectangle(0, 0, 640, 480);
 		Global.map = new Map();
@@ -59,6 +59,7 @@ public class Client {
 		
 		rend.addKeyListener(keyProcessor);
 		rend.addComponentListener(eventsProcessor);
+		rend.addMouseListener(mouseProcessor);
 		
 //		SwingUtilities.invokeLater(new Runnable() {
 //            @Override
@@ -101,6 +102,9 @@ public class Client {
 					String value = Global.socketReader.readLine();
 					
 					en.setParametr(key, value);
+					
+					if(key.equals(Constants.PARAM_MINE) )
+						Global.map.player = new Player(en);
 				}
 			}
 		}

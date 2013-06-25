@@ -5,6 +5,7 @@ import java.util.TreeMap;
 
 public class Map {
 	TreeMap<Integer, Entity> entities;
+	Player player = null;
 	
 	Map() {
 		entities = new TreeMap<Integer, Entity>(); 
