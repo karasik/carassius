@@ -40,7 +40,7 @@ public class TicLoopThread extends Thread {
 				}				
 				
 				
-				Thread.sleep(100000);
+				Thread.sleep(10);
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();

@@ -1,44 +1,64 @@
 package client;
 
 import java.awt.Point;
-import java.awt.geom.Point2D;
+import java.awt.Rectangle;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.Socket;
-
-import javax.swing.SwingUtilities;
 
 class Global {
 	
 	static Map map;
 	static Point cameraPosition;
+	static Rectangle visibleFrame;
+	static int tileWidth = 50;
+	static int tileHeight = 50;
 	
-	static Tile tile0;
-	static Tile tile1;
+	static BufferedReader socketReader = null;
+	static PrintWriter socketWriter = null;
+	
+	static Tile[] tiles = null;
 	
 }
 
 public class Client {
 	
+	KeyProcessor keyProcessor =
+			new KeyProcessor();
+	
+	FrameEventsProcessor eventsProcessor = 
+			new FrameEventsProcessor();
+	
 	public Client() throws IOException {
 		
-		Global.tile0 = new Tile("picture.jpg");
-		Global.tile1 = new Tile("grass.jpg");
+		Global.tiles = new Tile[] {
+				new Tile("tank.jpg"),
+				new Tile("grass.jpg"),
+				new Tile("picture.jpg")
+		};
 		
-		Entity e = new Entity(100500);
-		e.setTile(Global.tile0);
-		Point point = new Point(300, 100);
-		e.setPosition(point);
+//		Entity e = new Entity(100500);
+//		e.setTile(Global.tiles);
+//		Point point = new Point(300, 100);
+//		e.setPosition(point);
+		
+		
 		
 		Global.cameraPosition = new Point(0, 0);
+		Global.visibleFrame = new Rectangle(0, 0, 640, 480);
 		Global.map = new Map();
 		
 		//map = new Map();
-		Global.map.addEntity(e);
+//		Global.map.addEntity(e);
 		
 		Renderer rend = new Renderer();
 		rend.setVisible(true);
+		
+		rend.addKeyListener(keyProcessor);
+		rend.addComponentListener(eventsProcessor);
 		
 //		SwingUtilities.invokeLater(new Runnable() {
 //            @Override
@@ -48,12 +68,12 @@ public class Client {
 //            }
 //        });
 		
-		
 		Socket socket = null;
-		BufferedReader reader = null;
 		try {
-			socket = new Socket("localhost", 8080);
-			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			//socket = new Socket("localhost", 8080);
+			socket = new Socket("89.249.160.150", 8080);
+			Global.socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			Global.socketWriter = new PrintWriter( new OutputStreamWriter( socket.getOutputStream()), true );
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -63,8 +83,10 @@ public class Client {
 		
 		while(true) {
 			
-			String message = reader.readLine();
+			String message = Global.socketReader.readLine();
 			if(message.equals("RENDER")) {
+//				System.out.println("----------");
+				keyProcessor.informServer();
 				rend.repaint();
 			} else {
 				int globalId = Integer.parseInt(message);
@@ -72,15 +94,13 @@ public class Client {
 				Entity en = Global.map.getEntity(globalId);
 				
 				
-				int N = Integer.parseInt(reader.readLine());
+				int N = Integer.parseInt(Global.socketReader.readLine());
 				
 				for(int i = 0; i<N; i++) {
-					String key = reader.readLine();
-					String value = reader.readLine();
+					String key = Global.socketReader.readLine();
+					String value = Global.socketReader.readLine();
 					
 					en.setParametr(key, value);
-					
-					//System.out.println(key + " " + value);
 				}
 			}
 		}
