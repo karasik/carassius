@@ -6,6 +6,7 @@ public class Creature extends Entity {
 	
 	public Creature() {
 		lastMoveTime = Integer.MIN_VALUE / 2;
+		putParameter("walkable", "false");
 	}
 	
 	public void setWeapon(Weapon w) {

@@ -11,6 +11,7 @@ public class Entity {
 	public Entity() {
 		globalId = Entity.nextGlobalId++;
 		parameters = new TreeMap<String, String>();
+		Map.getInstance().putEntityInMap(this);
 	}
 	
 	public void putParameter(String key, String value) {

@@ -7,20 +7,32 @@ public class Map {
 	private TileContainer[][] tileMatrix;
 	private ArrayList<TileContainer> tileList;
 	private ArrayList<Player> players;
-	private TreeMap<Integer, Tile> tileMap;
+	private TreeMap<Integer, Entity> entityMap;
+	private static Map instance;
 	
-	public Map(int n, int m) {
+	public static Map getInstance() {
+		return instance;
+	}
+	
+	public static void initialize(int n, int m) {
+		if (instance == null) {
+			instance = new Map();
+			instance.generateMap(n, m);
+		}
+	}
+	
+	private Map() {
+		entityMap = new TreeMap<Integer, Entity>();
+		players = new ArrayList<Player>();
+	}
+	
+	private void generateMap(int n, int m) {
 		tileMatrix = MapGenerator.generateNormalMap(n, m);
 		tileList = new ArrayList<TileContainer>();
 		for (TileContainer[] u : tileMatrix) {
 			for (TileContainer v : u) {
 				tileList.add(v);
 			}
-		}
-		players = new ArrayList<Player>();
-		tileMap = new TreeMap<Integer, Tile>();
-		for (TileContainer c : tileList) {
-			tileMap.put(c.getTile().getGlobalId(), c.getTile());
 		}
 	}
 	
@@ -52,5 +64,21 @@ public class Map {
 			return c.moveTo(x + dx, y + dy);
 		}
 		return false;
+	}
+	
+	public void putEntityInMap(Entity e) {
+		entityMap.put(e.getGlobalId(), e);
+	}
+	
+	public Entity getEntityFromId(int globalId) {
+		return entityMap.get(globalId);
+	}
+
+	public void addProjectile(Projectile pr) {
+		tileMatrix[pr.getX()][pr.getY()].addProjectile(pr);
+	}
+	
+	public void removeProjectile(Projectile pr) {
+		tileMatrix[pr.getX()][pr.getY()].removeProjectile(pr);
 	}
 }

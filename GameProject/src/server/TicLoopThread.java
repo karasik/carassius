@@ -6,14 +6,14 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class TicLoopThread extends Thread {
-	private Map map;
 	private ArrayList<Socket> playerSockets;
 	private ArrayList<PrintWriter> playerStreams;
 	private char[] button;
 	private boolean[] wasButton;
+	private int[] mouseId;
+	private boolean[] wasMouse;
 	
-	public TicLoopThread(Map map, ArrayList<Socket> playerSockets, char[] button, boolean[] wasButton) throws IOException {
-		this.map = map;
+	public TicLoopThread(ArrayList<Socket> playerSockets, char[] button, boolean[] wasButton, int[] mouseId, boolean[] wasMouse) throws IOException {
 		this.playerSockets = playerSockets;
 		playerStreams = new ArrayList<PrintWriter>();
 		for (Socket s : playerSockets) {
@@ -22,6 +22,8 @@ public class TicLoopThread extends Thread {
 		}
 		this.button = button;
 		this.wasButton = wasButton;
+		this.mouseId = mouseId;
+		this.wasMouse = wasMouse;
 	}
 
 	public void run() {
@@ -31,15 +33,15 @@ public class TicLoopThread extends Thread {
 				for (int i=0; i<playerSockets.size(); i++) {
 					PrintWriter stream = playerStreams.get(i);
 					// говорим кто мы (персональный подход к каждому клиенту)
-					map.getPlayer(i).putParameter("mine", "true");
+					Map.getInstance().getPlayer(i).putParameter("mine", "true");
 					// выдаем все клетки
-					for (TileContainer tile : map.getTileList()) {
-						if (tile.isVisibleBy(map.getPlayer(i))) {
+					for (TileContainer tile : Map.getInstance().getTileList()) {
+						if (tile.isVisibleBy(Map.getInstance().getPlayer(i))) {
 							stream.print(tile.getInfo());
 						}
 					}
 					// мы меняемся
-					map.getPlayer(i).putParameter("mine", "false");
+					Map.getInstance().getPlayer(i).putParameter("mine", "false");
 					stream.println("RENDER");
 				}				
 				
@@ -53,24 +55,44 @@ public class TicLoopThread extends Thread {
 	}
 
 	private void makePlayersTurns() {
+		// обрабатываем мышь
+		for (int i=0; i<Global.NUM_PLAYERS; i++) {
+			if (!wasMouse[0]) continue;
+			Player p = Map.getInstance().getPlayer(i);
+			Weapon w = p.getWeapon(); // оружие всегда есть!
+			Entity e = Map.getInstance().getEntityFromId(mouseId[0]);
+			
+			
+			int playerX = p.getX(), playerY = p.getY();
+			int targetX = e.getX(), targetY = e.getY();
+			
+			Projectile pr = new Projectile(playerX, playerY, targetX, targetY, w.getDamage(), w.getRadius());
+			Map.getInstance().addProjectile(pr);
+			
+			synchronized (wasMouse) {
+				wasMouse[0] = false;
+			}
+		}
+		// обрабатываем клавиатуру
 		for (int i=0; i<Global.NUM_PLAYERS; i++) {
 			if (!wasButton[i]) continue;
 			boolean success = false;
 			switch (button[i]) {
 			case 'w':
-				success = map.tryToChangeCreatureCoordDiff(map.getPlayer(i), 0, -1);
+				success = Map.getInstance().tryToChangeCreatureCoordDiff(Map.getInstance().getPlayer(i), 0, -1);
 				break;
 			case 'a':
-				success = map.tryToChangeCreatureCoordDiff(map.getPlayer(i), -1, 0);
+				success = Map.getInstance().tryToChangeCreatureCoordDiff(Map.getInstance().getPlayer(i), -1, 0);
 				break;
 			case 's':
-				success = map.tryToChangeCreatureCoordDiff(map.getPlayer(i), 0, 1);
+				success = Map.getInstance().tryToChangeCreatureCoordDiff(Map.getInstance().getPlayer(i), 0, 1);
 				break;
 			case 'd':
-				success = map.tryToChangeCreatureCoordDiff(map.getPlayer(i), 1, 0);
+				success = Map.getInstance().tryToChangeCreatureCoordDiff(Map.getInstance().getPlayer(i), 1, 0);
 				break;
 			default:
 				success = true;
+				break;
 			}
 			if (success) {
 				synchronized (wasButton) {

@@ -51,4 +51,12 @@ public class TileContainer {
 	public Tile getTile() {
 		return tile;
 	}
+
+	public void addProjectile(Projectile pr) {
+		projectiles.add(pr);
+	}
+	
+	public void removeProjectile(Projectile pr) {
+		projectiles.remove(pr);
+	}
 }
