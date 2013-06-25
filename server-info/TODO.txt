@@ -1,0 +1,14 @@
+в UML добавь MapGenerator, который вызывается Map и создает Tile
+класс Projectile должен наследовать Entity
+добавить TickLoopThread и ListenClientsThread, которые работают с Server
+
+каждый тик сервер отправляет:
+...
+globalId (int)
+key (String)
+value (String)
+...
+"RENDER" -- говорит о том, что тик окончен и можно рисовать
+
+type предлагаю делать не полем, а записью в таблице
+
