@@ -39,4 +39,12 @@ public class TileContainer {
 	public void addCreature(Creature c) {
 		creatures.add(c);
 	}
+
+	public boolean isWalkable() {
+		return tile.getParameter("walkable").equals("true");
+	}
+
+	public void removeCreature(Creature c) {
+		creatures.remove(c);
+	}
 }

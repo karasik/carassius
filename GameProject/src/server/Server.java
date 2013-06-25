@@ -8,10 +8,14 @@ import java.util.ArrayList;
 public class Server {
 	private Map map;
 	private ArrayList<Socket> playerSockets;
+	private char[] button;
+	private boolean[] wasButton;
 	
 	public Server(int n, int m) {
 		map = new Map(n, m);
 		playerSockets = new ArrayList<Socket>();
+		button = new char[Const.NUM_PLAYERS];
+		wasButton = new boolean[Const.NUM_PLAYERS];
 	}
 	
 	public void start() throws IOException, InterruptedException {
@@ -21,13 +25,13 @@ public class Server {
 			playerSockets.add(s.accept());
 			// здесь нужно сделать игрока соответствующего класса
 			map.addWarrior(i);
+			new ListenClientThread(i, playerSockets.get(i), button, wasButton).start();
 		}
 		// ура! у меня есть все клиенты и теперь я с ними могу работать
-		new TicLoopThread(map, playerSockets).start();
-		new ListenClientsThread().start();
+		new TicLoopThread(map, playerSockets, button, wasButton).start();
 	}
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
-		new Server(5, 5).start();
+		new Server(20, 20).start();
 	}
 }

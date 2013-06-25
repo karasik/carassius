@@ -7,7 +7,8 @@ public class MapGenerator {
 
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < m; j++) {
-				if ((i + j) % 5 == 0 && !spawnArea(i, j)) {
+				if ((i == 0 || j == 0 || i == n - 1 || j == m - 1)
+						|| (i + j) % 5 == 0 && !spawnArea(i, j)) {
 					a[i][j] = new TileContainer(i, j, false);
 				} else {
 					a[i][j] = new TileContainer(i, j, true);
@@ -17,9 +18,9 @@ public class MapGenerator {
 
 		return a;
 	}
-	
+
 	private static boolean spawnArea(int i, int j) {
-		return i <= 10 && j <= 10;
+		return i >= 1 && j >= 1 && i <= 10 && j <= 10;
 	}
 
 }

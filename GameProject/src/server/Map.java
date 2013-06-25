@@ -37,4 +37,13 @@ public class Map {
 	public Player getPlayer(int i) {
 		return players.get(i);
 	}
+
+	public void tryToChangeCreatureCoordDiff(Creature c, int dx, int dy) {
+		int x = c.getX(), y = c.getY();
+		if (tileMatrix[x + dx][y + dy].isWalkable()) {
+			tileMatrix[x + dx][y + dy].addCreature(c);
+			tileMatrix[x][y].removeCreature(c);
+			c.setCoord(x + dx, y + dy);
+		}
+	}
 }

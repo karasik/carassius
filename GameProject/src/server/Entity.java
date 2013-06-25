@@ -47,7 +47,11 @@ public class Entity {
 	}
 	
 	public int getY() {
-		return Integer.parseInt(getParameter("x"));
+		return Integer.parseInt(getParameter("y"));
+	}
+	
+	public boolean equals(Object o) {
+		return globalId == ((Entity)o).globalId;
 	}
 	
 }
