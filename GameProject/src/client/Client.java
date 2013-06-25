@@ -59,7 +59,7 @@ public class Client {
 		
 		rend.addKeyListener(keyProcessor);
 		rend.addComponentListener(eventsProcessor);
-		rend.addMouseListener(mouseProcessor);
+		rend.getComponent(0).addMouseListener(mouseProcessor);
 		
 //		SwingUtilities.invokeLater(new Runnable() {
 //            @Override

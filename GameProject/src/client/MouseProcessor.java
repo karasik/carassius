@@ -12,13 +12,12 @@ public class MouseProcessor implements MouseListener {
 		// TODO Auto-generated method stub
 		Point clickPos = e.getPoint();
 		
-		//System.out.println(clickPos);
+		System.out.println(clickPos);
+		
 		clickPos.x += 
 				Global.cameraPosition.x - Global.visibleFrame.width/2;
 		clickPos.y += 
 				Global.cameraPosition.y - Global.visibleFrame.height/2;
-		//System.out.println(clickPos);
-		//System.out.println("-------");
 		
 		int id = -1;
 		int type = -1;
@@ -36,7 +35,10 @@ public class MouseProcessor implements MouseListener {
 		System.out.println(id);
 		System.out.println(type);
 		if(id != -1) {
-			
+			synchronized (Global.socketWriter) {
+				Global.socketWriter.println("m " + id);
+				System.out.println("mouse send: " + id);
+			}
 		}
 	}
 

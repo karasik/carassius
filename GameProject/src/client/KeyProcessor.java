@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class KeyProcessor implements KeyListener {
 	long lastTime = 0;
-	long stepTime = 100000000L;
+	long stepTime = 10000000L;
 	
 	ArrayList<Character> keysQueue = 
 			new ArrayList<Character>();
@@ -34,7 +34,9 @@ public class KeyProcessor implements KeyListener {
 		long currentTime = System.nanoTime();
 		if(currentTime - lastTime > stepTime) {
 			if(!keysQueue.isEmpty()) {
-				Global.socketWriter.println(keysQueue.get(keysQueue.size() - 1));
+				synchronized(Global.socketWriter) {
+					Global.socketWriter.println(keysQueue.get(keysQueue.size() - 1));
+				}
 				System.out.println(keysQueue.get(keysQueue.size() - 1));
 			}
 			keysQueue.clear();

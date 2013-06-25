@@ -8,7 +8,7 @@ public class Map {
 	Player player = null;
 	
 	Map() {
-		entities = new TreeMap<Integer, Entity>(); 
+		entities = new TreeMap<Integer, Entity>();
 	}
 	
 	void addEntity(Entity entity) {
