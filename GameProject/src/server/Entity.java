@@ -26,6 +26,8 @@ public class Entity {
 		String ret = "";
 		ret += globalId;
 		ret += System.lineSeparator();
+		ret += parameters.size();
+		ret += System.lineSeparator();
 		for (String key : parameters.keySet()) {
 			ret += key;
 			ret += System.lineSeparator();
