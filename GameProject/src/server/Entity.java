@@ -13,11 +13,11 @@ public class Entity {
 		parameters = new TreeMap<String, String>();
 	}
 	
-	protected void putParameter(String key, String value) {
+	public void putParameter(String key, String value) {
 		parameters.put(key, value);
 	}
 	
-	protected String getParameter(String key) {
+	public String getParameter(String key) {
 		if (!parameters.containsKey(key)) return null;
 		return parameters.get(key);
 	}
@@ -35,6 +35,19 @@ public class Entity {
 			ret += System.lineSeparator();
 		}
 		return ret;
+	}
+	
+	public void setCoord(int x, int y) {
+		putParameter("x", x + "");
+		putParameter("y", y + "");
+	}
+	
+	public int getX() {
+		return Integer.parseInt(getParameter("x"));
+	}
+	
+	public int getY() {
+		return Integer.parseInt(getParameter("x"));
 	}
 	
 }
