@@ -1,24 +1,22 @@
 package client;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.TreeMap;
 
 public class Map {
-	//LinkedList<Entity> entities;
-	
-	ArrayList<Entity> entities;
+	TreeMap<Integer, Entity> entities;
 	
 	Map() {
-		entities = new ArrayList<Entity>(); 
+		entities = new TreeMap<Integer, Entity>(); 
 	}
 	
 	void addEntity(Entity entity) {
-		entities.add(entity);
+		entities.put(entity.globalId, entity);
 	}
 	
 	Entity getEntity(int index) {
-		while(index >= entities.size()) {
-			entities.add(new Entity());
+		if(!entities.containsKey(index)) {
+			entities.put(index, new Entity(index));
 		}
 		return entities.get(index);
 	}

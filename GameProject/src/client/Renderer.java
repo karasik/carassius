@@ -40,7 +40,9 @@ class DrawPanel extends JPanel {
 //		tile.draw(g, new Rectangle(500, -50, 200, 200), new Rectangle(0, 0, 640, 480));
 		
 		Rectangle frame = new Rectangle(0, 0, 640, 480);
-		for(Entity entity : Global.map.entities) {
+		for(Entity entity : Global.map.entities.values()) {
+			if(entity.tile == null)
+				entity.setTile(Global.tile0, Global.tile1);
 			entity.tile.draw(g, entity.getPositionRect(), frame);
 		}
 	}

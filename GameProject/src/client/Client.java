@@ -14,16 +14,20 @@ class Global {
 	static Map map;
 	static Point cameraPosition;
 	
+	static Tile tile0;
+	static Tile tile1;
+	
 }
 
 public class Client {
 	
 	public Client() throws IOException {
 		
-		Tile tile = new Tile("picture.jpg");
+		Global.tile0 = new Tile("picture.jpg");
+		Global.tile1 = new Tile("grass.jpg");
 		
-		Entity e = new Entity();
-		e.setTile(tile);
+		Entity e = new Entity(100500);
+		e.setTile(Global.tile0);
 		Point point = new Point(300, 100);
 		e.setPosition(point);
 		
@@ -67,13 +71,16 @@ public class Client {
 				
 				Entity en = Global.map.getEntity(globalId);
 				
+				
 				int N = Integer.parseInt(reader.readLine());
 				
-				for(int i = 0; i<2*N; i++) {
+				for(int i = 0; i<N; i++) {
 					String key = reader.readLine();
 					String value = reader.readLine();
 					
 					en.setParametr(key, value);
+					
+					//System.out.println(key + " " + value);
 				}
 			}
 		}
