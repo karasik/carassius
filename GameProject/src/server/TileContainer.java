@@ -31,4 +31,12 @@ public class TileContainer {
 		}
 		return ret;
 	}
+
+	public boolean isVisibleBy(Entity entity) {
+		return Math.hypot(tile.getX() - entity.getX(), tile.getY() - entity.getY()) <= Const.VISIBLE_DISTANCE;
+	}
+
+	public void addCreature(Creature c) {
+		creatures.add(c);
+	}
 }
