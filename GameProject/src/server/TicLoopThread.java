@@ -55,19 +55,31 @@ public class TicLoopThread extends Thread {
 	}
 
 	private void makePlayersTurns() {
+		// обрабатываем все летящие хрени
+		for (TileContainer u : Map.getInstance().getTileList()) {
+			for (Projectile p : u.getProjectiles()) {
+				p.moveToTarget();
+			}
+		}
+		
+		for (TileContainer u : Map.getInstance().getTileList()) {
+			for (Projectile p : u.getProjectiles()) {
+				p.moveToTarget();
+			}
+		}
+		
 		// обрабатываем мышь
 		for (int i=0; i<Global.NUM_PLAYERS; i++) {
 			if (!wasMouse[0]) continue;
 			Player p = Map.getInstance().getPlayer(i);
-			Weapon w = p.getWeapon(); // оружие всегда есть!
+			Weapon w = p.getWeapon(); 
+			if (w == null) continue; // если нет оружия, то щито поделать десу
 			Entity e = Map.getInstance().getEntityFromId(mouseId[0]);
-			
 			
 			int playerX = p.getX(), playerY = p.getY();
 			int targetX = e.getX(), targetY = e.getY();
 			
-			Projectile pr = new Projectile(playerX, playerY, targetX, targetY, w.getDamage(), w.getRadius());
-			Map.getInstance().addProjectile(pr);
+			Projectile pr = new Projectile(playerX, playerY, targetX, targetY, w.getDamage(), w.getRadius(), p);
 			
 			synchronized (wasMouse) {
 				wasMouse[0] = false;
@@ -79,16 +91,16 @@ public class TicLoopThread extends Thread {
 			boolean success = false;
 			switch (button[i]) {
 			case 'w':
-				success = Map.getInstance().tryToChangeCreatureCoordDiff(Map.getInstance().getPlayer(i), 0, -1);
+				success = Map.getInstance().getPlayer(i).tryToChangeCoordBy(0, -1);
 				break;
 			case 'a':
-				success = Map.getInstance().tryToChangeCreatureCoordDiff(Map.getInstance().getPlayer(i), -1, 0);
+				success = Map.getInstance().getPlayer(i).tryToChangeCoordBy(-1, 0);
 				break;
 			case 's':
-				success = Map.getInstance().tryToChangeCreatureCoordDiff(Map.getInstance().getPlayer(i), 0, 1);
+				success = Map.getInstance().getPlayer(i).tryToChangeCoordBy(0, 1);
 				break;
 			case 'd':
-				success = Map.getInstance().tryToChangeCreatureCoordDiff(Map.getInstance().getPlayer(i), 1, 0);
+				success = Map.getInstance().getPlayer(i).tryToChangeCoordBy(1, 0);
 				break;
 			default:
 				success = true;

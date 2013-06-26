@@ -2,11 +2,11 @@ package server;
 
 public class Creature extends Entity {
 	private Weapon weapon;
-	private int lastMoveTime;
+	
 	
 	public Creature() {
-		lastMoveTime = Integer.MIN_VALUE / 2;
 		putParameter("walkable", "false");
+		putParameter("alive", "true");
 	}
 	
 	public void setWeapon(Weapon w) {
@@ -17,17 +17,49 @@ public class Creature extends Entity {
 		return weapon;
 	}
 
-	public boolean moveTo(int x, int y) {
-		if (getParameter("walk-delay") == null) {
-			setCoord(x, y);
-			lastMoveTime = Global.time;
-			return true;
+	public boolean tryToChangeCoordBy(int dx, int dy) {
+		int x = this.getX(), y = this.getY();
+		TileContainer[][] tileMatrix = Map.getInstance().getTileMatrix();
+		if (tileMatrix[x + dx][y + dy].getTile().isWalkable() && tileMatrix[x + dx][y + dy].getCreatures().size() == 0) {
+			return this.tryToMoveTo(x + dx, y + dy);
 		}
-		if (Global.time - lastMoveTime <= Integer.parseInt(getParameter("walk-delay"))) {
-			return false;
-		}
-		setCoord(x, y);
-		lastMoveTime = Global.time;
-		return true;
+		return false;
 	}
+	
+	public String getParameterStrings() {
+		if (isAlive()) {
+			return super.getParameterStrings();
+		}
+		return "";
+	}
+
+
+	private boolean isAlive() {
+		return getParameter("alive").equals("true");
+	}
+
+	public void changeCoord(int x, int y) {
+		TileContainer[][] tileMatrix = Map.getInstance().getTileMatrix();
+		tileMatrix[getX()][getY()].removeCreature(this);
+		putParameter("x", x + "");
+		putParameter("y", y + "");
+		tileMatrix[getX()][getY()].addCreature(this);
+	}
+
+	public void setCoord(int x, int y) {
+		TileContainer[][] tileMatrix = Map.getInstance().getTileMatrix();
+		putParameter("x", x + "");
+		putParameter("y", y + "");
+		tileMatrix[getX()][getY()].addCreature(this);
+	}
+
+	public void hit(int damage) {
+		int hp = Integer.parseInt(this.getParameter("hp"));
+		hp = Math.max(0, hp - damage);
+		this.putParameter("hp", hp + "");
+		if (hp == 0) {
+			this.putParameter("alive", "false");
+		}
+	}
+	
 }

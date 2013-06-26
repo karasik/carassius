@@ -7,7 +7,7 @@ public class Warrior extends Player {
 		putParameter("type", "2");
 		putParameter("hp", "50");
 		putParameter("mp", "5");
-		putParameter("walk-delay", "10");
+		putParameter("move-delay", "10");
 		putParameter("strength", "10");
 		putParameter("agility", "3");
 		putParameter("inellect", "3");

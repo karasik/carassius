@@ -56,15 +56,6 @@ public class Map {
 		return players.get(i);
 	}
 
-	public boolean tryToChangeCreatureCoordDiff(Creature c, int dx, int dy) {
-		int x = c.getX(), y = c.getY();
-		if (tileMatrix[x + dx][y + dy].isWalkable()) {
-			tileMatrix[x + dx][y + dy].addCreature(c);
-			tileMatrix[x][y].removeCreature(c);
-			return c.moveTo(x + dx, y + dy);
-		}
-		return false;
-	}
 	
 	public void putEntityInMap(Entity e) {
 		entityMap.put(e.getGlobalId(), e);
