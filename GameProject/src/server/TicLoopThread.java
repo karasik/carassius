@@ -59,13 +59,10 @@ public class TicLoopThread extends Thread {
 
 	private void moveProjectiles() {
 		// обрабатываем все летящие хрени
-		for (TileContainer u : Map.getInstance().getTileList()) {
-			for (Projectile p : u.getProjectiles()) {
-				System.out.println(p.getGlobalId());
-				p.moveToTarget();
-			}
+		for (Projectile p : Map.getInstance().getAllProjectiles()) {
+			p.moveToTarget();
 		}
-
+		Map.getInstance().refreshProjectiles();
 	}
 
 	private void makePlayersTurns() {
@@ -84,7 +81,7 @@ public class TicLoopThread extends Thread {
 			int targetX = e.getX(), targetY = e.getY();
 
 			Projectile pr = new Projectile(playerX, playerY, targetX, targetY,
-					w.getDamage(), w.getRadius(), p);
+					w.getDamage(), w.getRadius());
 
 			synchronized (wasMouse) {
 				wasMouse[0] = false;

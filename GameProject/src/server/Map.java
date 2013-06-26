@@ -7,6 +7,7 @@ public class Map {
 	private TileContainer[][] tileMatrix;
 	private ArrayList<TileContainer> tileList;
 	private ArrayList<Player> players;
+	private ArrayList<Projectile> allProjectiles;
 	private TreeMap<Integer, Entity> entityMap;
 	private static Map instance;
 	
@@ -24,6 +25,7 @@ public class Map {
 	private Map() {
 		entityMap = new TreeMap<Integer, Entity>();
 		players = new ArrayList<Player>();
+		allProjectiles = new ArrayList<Projectile>();
 	}
 	
 	private void generateMap(int n, int m) {
@@ -71,5 +73,17 @@ public class Map {
 	
 	public void removeProjectile(Projectile pr) {
 		tileMatrix[pr.getX()][pr.getY()].removeProjectile(pr);
+	}
+
+	public ArrayList<Projectile> getAllProjectiles() {
+		return allProjectiles;
+	}
+	
+	public void refreshProjectiles() {
+		ArrayList<Projectile> tmp = new ArrayList<Projectile>();
+		for (Projectile p : allProjectiles) {
+			if (p.isAlive()) tmp.add(p);
+		}
+		allProjectiles = tmp;
 	}
 }
