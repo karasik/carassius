@@ -35,7 +35,7 @@ public class TicLoopThread extends Thread {
 				makePlayersTurns();
 				sendInfo();
 				
-				Thread.sleep(30);
+				Thread.sleep(Global.DELAY);
 				Global.time++;
 			}
 		} catch (InterruptedException e) {
