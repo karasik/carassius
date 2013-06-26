@@ -45,24 +45,26 @@ class DrawPanel extends JPanel {
 				- Global.map.player.playerEntity.getPosition().x + Global.visibleFrame.width/2 - Global.tileWidth/2,
 				- Global.map.player.playerEntity.getPosition().y + Global.visibleFrame.height/2 - Global.tileHeight/2);
 		
-		for(Entity entity : Global.map.entities.values()) {
-			if(entity.tile == null) {
-				entity.setTile(Global.tiles);
+		synchronized (Global.map) {
+			for(Entity entity : Global.map.entities.values()) {
+				if(entity.tile == null) {
+					entity.setTile(Global.tiles);
+				}
+				
+				Rectangle rect = new Rectangle(
+						entity.getPositionRect().x + plus.x,
+						entity.getPositionRect().y + plus.y,
+						entity.getPositionRect().width,
+						entity.getPositionRect().height
+						);
+				
+				double distance = Global.distanceOfView * Global.tileHeight + 1e-6;
+				boolean visible = Math.hypot(entity.getPosition().x - Global.cameraPosition.x + Global.tileWidth/2, 
+						entity.getPosition().y - Global.cameraPosition.y + Global.tileHeight/2) <= distance;
+				boolean upToDate = entity.getTick() == Global.tickCounter-1;
+				
+				entity.tile.draw(g, rect, Global.visibleFrame, visible, upToDate);
 			}
-			
-			Rectangle rect = new Rectangle(
-					entity.getPositionRect().x + plus.x,
-					entity.getPositionRect().y + plus.y,
-					entity.getPositionRect().width,
-					entity.getPositionRect().height
-					);
-			
-			double distance = Global.distanceOfView * Global.tileHeight + 1e-6;
-			boolean visible = Math.hypot(entity.getPosition().x - Global.cameraPosition.x + Global.tileWidth/2, 
-					entity.getPosition().y - Global.cameraPosition.y + Global.tileHeight/2) <= distance;
-			boolean upToDate = entity.getTick() == Global.tickCounter-1;
-			
-			entity.tile.draw(g, rect, Global.visibleFrame, visible, upToDate);
 		}
 		
 		

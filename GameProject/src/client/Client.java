@@ -78,21 +78,24 @@ public class Client {
 			} else {
 				int globalId = Integer.parseInt(message);
 				
-				Entity en = Global.map.getEntity(globalId);
-				
-				
-				int N = Integer.parseInt(Global.socketReader.readLine());
-				
-				for(int i = 0; i<N; i++) {
-					String key = Global.socketReader.readLine();
-					String value = Global.socketReader.readLine();
+				synchronized(Global.map) {
 					
-					en.setParametr(key, value);
+					Entity en = Global.map.getEntity(globalId);
+				
+					int N = Integer.parseInt(Global.socketReader.readLine());
+				
+					for(int i = 0; i<N; i++) {
+						String key = Global.socketReader.readLine();
+						String value = Global.socketReader.readLine();
 					
-					if(key.equals(Constants.PARAM_MINE) )
-						Global.map.player = new Player(en);
+						en.setParametr(key, value);
+					
+						if(key.equals(Constants.PARAM_MINE) )
+							Global.map.player = new Player(en);
+					}
+					en.setParametr(Constants.PARAM_TICK, Global.tickCounter+"");
+				
 				}
-				en.setParametr(Constants.PARAM_TICK, Global.tickCounter+"");
 			}
 		}
 		
