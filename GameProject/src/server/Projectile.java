@@ -38,7 +38,7 @@ public class Projectile extends Entity {
 		this.setCoord(x0, y0);
 		this.putParameter("walkable", "true");
 		this.putParameter("alive", "true");
-		this.putParameter("move-delay", "1");
+		this.putParameter("move-delay", "0");
 		this.putParameter("type", "3");
 		
 		Map.getInstance().getAllProjectiles().add(this);
