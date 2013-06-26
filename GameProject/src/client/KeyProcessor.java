@@ -15,7 +15,6 @@ public class KeyProcessor implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		Character ch = e.getKeyChar();
 		keysQueue.add(ch);
-		//System.out.println(ch);
 	}
 
 	@Override
@@ -34,10 +33,11 @@ public class KeyProcessor implements KeyListener {
 		long currentTime = System.nanoTime();
 		if(currentTime - lastTime > stepTime) {
 			if(!keysQueue.isEmpty()) {
+				Character ch = keysQueue.get(keysQueue.size() - 1);
 				synchronized(Global.socketWriter) {
-					Global.socketWriter.println(keysQueue.get(keysQueue.size() - 1));
+					Global.socketWriter.println(ch);
 				}
-				System.out.println(keysQueue.get(keysQueue.size() - 1));
+				System.out.println("key send: " + ch);
 			}
 			keysQueue.clear();
 			lastTime = currentTime;

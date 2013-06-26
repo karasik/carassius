@@ -1,5 +1,7 @@
 package client;
 
+import java.awt.AlphaComposite;
+import java.awt.Composite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -25,7 +27,7 @@ public class Tile {
 	
 	private BufferedImage image;
 	
-	public void draw(Graphics g, Rectangle rect, Rectangle frame) {
+	public void draw(Graphics g, Rectangle rect, Rectangle frame, boolean visible) {
 		Graphics2D g2 = (Graphics2D)g;
 		
 		Rectangle fillRect = (Rectangle)rect.clone();
@@ -39,11 +41,25 @@ public class Tile {
 		
 		TexturePaint paint = new TexturePaint(image, rect);
 		
+		
+		
+		Composite originalComposite = g2.getComposite();
+		if(!visible) {
+			float alpha = 0.5f;
+			int rule = AlphaComposite.SRC_OVER;
+			
+			g2.setComposite(AlphaComposite.getInstance(rule, alpha));
+		}
+		
+		
 		g2.setPaint(paint);
+		
 		g2.fillRect(clamp(rect.x, frame.x, frame.x + frame.width),
 					clamp(rect.y, frame.y, frame.y + frame.height),
 					fillRect.width,
 					fillRect.height);
+		
+		g2.setComposite(originalComposite);
 	}
 	
 	private int clamp(int val, int l, int r) {
