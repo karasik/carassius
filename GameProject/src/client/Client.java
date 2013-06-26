@@ -115,7 +115,7 @@ public class Client {
 					
 						en.setParametr(key, value);
 					
-						if(key.equals(Constants.PARAM_MINE) )
+						if(key.equals(Constants.PARAM_MINE) && value.equals("true") )
 							Global.map.player = new Player(en);
 					}
 					en.setParametr(Constants.PARAM_TICK, Global.tickCounter+"");
