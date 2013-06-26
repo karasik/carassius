@@ -12,8 +12,10 @@ public class TicLoopThread extends Thread {
 	private boolean[] wasButton;
 	private int[] mouseId;
 	private boolean[] wasMouse;
-	
-	public TicLoopThread(ArrayList<Socket> playerSockets, char[] button, boolean[] wasButton, int[] mouseId, boolean[] wasMouse) throws IOException {
+
+	public TicLoopThread(ArrayList<Socket> playerSockets, char[] button,
+			boolean[] wasButton, int[] mouseId, boolean[] wasMouse)
+			throws IOException {
 		this.playerSockets = playerSockets;
 		playerStreams = new ArrayList<PrintWriter>();
 		for (Socket s : playerSockets) {
@@ -29,8 +31,9 @@ public class TicLoopThread extends Thread {
 	public void run() {
 		try {
 			while (true) {
+				moveProjectiles();
 				makePlayersTurns();
-				for (int i=0; i<playerSockets.size(); i++) {
+				for (int i = 0; i < playerSockets.size(); i++) {
 					PrintWriter stream = playerStreams.get(i);
 					// говорим кто мы (персональный подход к каждому клиенту)
 					Map.getInstance().getPlayer(i).putParameter("mine", "true");
@@ -41,11 +44,11 @@ public class TicLoopThread extends Thread {
 						}
 					}
 					// мы меняемся
-					Map.getInstance().getPlayer(i).putParameter("mine", "false");
+					Map.getInstance().getPlayer(i)
+							.putParameter("mine", "false");
 					stream.println("RENDER");
-				}				
-				
-				
+				}
+
 				Thread.sleep(10);
 				Global.time++;
 			}
@@ -54,53 +57,60 @@ public class TicLoopThread extends Thread {
 		}
 	}
 
-	private void makePlayersTurns() {
+	private void moveProjectiles() {
 		// обрабатываем все летящие хрени
 		for (TileContainer u : Map.getInstance().getTileList()) {
 			for (Projectile p : u.getProjectiles()) {
+				System.out.println(p.getGlobalId());
 				p.moveToTarget();
 			}
 		}
-		
-		for (TileContainer u : Map.getInstance().getTileList()) {
-			for (Projectile p : u.getProjectiles()) {
-				p.moveToTarget();
-			}
-		}
-		
+
+	}
+
+	private void makePlayersTurns() {
+
 		// обрабатываем мышь
-		for (int i=0; i<Global.NUM_PLAYERS; i++) {
-			if (!wasMouse[0]) continue;
+		for (int i = 0; i < Global.NUM_PLAYERS; i++) {
+			if (!wasMouse[0])
+				continue;
 			Player p = Map.getInstance().getPlayer(i);
-			Weapon w = p.getWeapon(); 
-			if (w == null) continue; // если нет оружия, то щито поделать десу
+			Weapon w = p.getWeapon();
+			if (w == null)
+				continue; // если нет оружия, то щито поделать десу
 			Entity e = Map.getInstance().getEntityFromId(mouseId[0]);
-			
+
 			int playerX = p.getX(), playerY = p.getY();
 			int targetX = e.getX(), targetY = e.getY();
-			
-			Projectile pr = new Projectile(playerX, playerY, targetX, targetY, w.getDamage(), w.getRadius(), p);
-			
+
+			Projectile pr = new Projectile(playerX, playerY, targetX, targetY,
+					w.getDamage(), w.getRadius(), p);
+
 			synchronized (wasMouse) {
 				wasMouse[0] = false;
 			}
 		}
 		// обрабатываем клавиатуру
-		for (int i=0; i<Global.NUM_PLAYERS; i++) {
-			if (!wasButton[i]) continue;
+		for (int i = 0; i < Global.NUM_PLAYERS; i++) {
+			if (!wasButton[i])
+				continue;
 			boolean success = false;
 			switch (button[i]) {
 			case 'w':
-				success = Map.getInstance().getPlayer(i).tryToChangeCoordBy(0, -1);
+				success = Map.getInstance().getPlayer(i)
+						.tryToChangeCoordBy(0, -1);
 				break;
 			case 'a':
-				success = Map.getInstance().getPlayer(i).tryToChangeCoordBy(-1, 0);
+				success = Map.getInstance().getPlayer(i)
+						.tryToChangeCoordBy(-1, 0);
 				break;
 			case 's':
-				success = Map.getInstance().getPlayer(i).tryToChangeCoordBy(0, 1);
+				success = Map.getInstance().getPlayer(i)
+						.tryToChangeCoordBy(0, 1);
 				break;
 			case 'd':
-				success = Map.getInstance().getPlayer(i).tryToChangeCoordBy(1, 0);
+				success = Map.getInstance().getPlayer(i)
+						.tryToChangeCoordBy(1, 0);
 				break;
 			default:
 				success = true;
