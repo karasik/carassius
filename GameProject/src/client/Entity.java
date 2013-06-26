@@ -75,6 +75,11 @@ public class Entity {
 		return Integer.parseInt(getParametr(Constants.PARAM_TICK) );
 	}
 	
+	boolean isTile() {
+		String s = getParametr(Constants.PARAM_TILE);
+		return s != null && Boolean.parseBoolean(s);
+	}
+	
 	void updatePlayerPosition() {
 		if(getParametr(Constants.PARAM_MINE).equals("true")) {
 			Global.cameraPosition = getPosition();

@@ -68,8 +68,33 @@ public class Client {
 		}
 		
 		
-		while(true) {
+		{
+			int ysize = Integer.parseInt(Global.socketReader.readLine());
+			int xsize = Integer.parseInt(Global.socketReader.readLine());
 			
+			for(int y =0 ; y<ysize; y++) {
+				for(int x =0 ; x < xsize; x++) {
+					int globalId = Integer.parseInt(Global.socketReader.readLine());
+					
+					Entity en = Global.map.getEntity(globalId);
+					
+					int N = Integer.parseInt(Global.socketReader.readLine());
+				
+					for(int i = 0; i<N; i++) {
+						String key = Global.socketReader.readLine();
+						String value = Global.socketReader.readLine();
+					
+						en.setParametr(key, value);
+					}
+					en.setParametr(Constants.PARAM_TICK, Global.tickCounter+"");
+				}
+			}
+			
+			Global.tickCounter++;
+		}
+		
+		
+		while(true) {
 			String message = Global.socketReader.readLine();
 			if(message.equals("RENDER")) {
 				Global.tickCounter ++;
@@ -102,10 +127,7 @@ public class Client {
 		
 	}
 	
-	
-	
 	Map map;
-	
 	
 	public static void main(String[] argv) throws IOException {
 		Client client = new Client();

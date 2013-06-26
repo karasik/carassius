@@ -20,7 +20,7 @@ public class MapGenerator {
 	}
 
 	private static boolean spawnArea(int i, int j) {
-		return i >= 1 && j >= 1 && i <= 10 && j <= 10;
+		return i >= 1 && j >= 1 && i <= 100 && j <= 100;
 	}
 
 }
