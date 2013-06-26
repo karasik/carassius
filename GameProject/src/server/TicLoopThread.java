@@ -20,7 +20,7 @@ public class TicLoopThread extends Thread {
 		playerStreams = new ArrayList<PrintWriter>();
 		for (Socket s : playerSockets) {
 			// true вторым аргументом означает autoflush
-			playerStreams.add(new PrintWriter(s.getOutputStream(), true));
+			playerStreams.add(new PrintWriter(s.getOutputStream(), false));
 		}
 		this.button = button;
 		this.wasButton = wasButton;
@@ -33,28 +33,35 @@ public class TicLoopThread extends Thread {
 			while (true) {
 				moveProjectiles();
 				makePlayersTurns();
-				for (int i = 0; i < playerSockets.size(); i++) {
-					PrintWriter stream = playerStreams.get(i);
-					// говорим кто мы (персональный подход к каждому клиенту)
-					Map.getInstance().getPlayer(i).putParameter("mine", "true");
-					// выдаем все клетки
-					for (TileContainer tile : Map.getInstance().getTileList()) {
-						if (tile.isVisibleBy(Map.getInstance().getPlayer(i))) {
-							stream.print(tile.getInfo());
-						}
-					}
-					// мы меняемся
-					Map.getInstance().getPlayer(i)
-							.putParameter("mine", "false");
-					stream.println("RENDER");
-				}
-
-				Thread.sleep(10);
+				sendInfo();
+				
+				Thread.sleep(30);
 				Global.time++;
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void sendInfo() {
+		for (int i = 0; i < playerSockets.size(); i++) {
+			PrintWriter stream = playerStreams.get(i);
+			// говорим кто мы (персональный подход к каждому клиенту)
+			Map.getInstance().getPlayer(i).putParameter("mine", "true");
+			// выдаем все клетки
+			for (TileContainer tile : Map.getInstance().getTileList()) {
+				if (tile.isVisibleBy(Map.getInstance().getPlayer(i))) {
+					stream.print(tile.getInfo());
+				}
+			}
+			// мы меняемся
+			Map.getInstance().getPlayer(i)
+					.putParameter("mine", "false");
+			stream.println("RENDER");
+			stream.flush();
+		}
+
+		
 	}
 
 	private void moveProjectiles() {
@@ -79,6 +86,8 @@ public class TicLoopThread extends Thread {
 
 			int playerX = p.getX(), playerY = p.getY();
 			int targetX = e.getX(), targetY = e.getY();
+			
+			if (playerX == targetX && playerY == targetY) continue; // не хотет стрелять в себя
 
 			Projectile pr = new Projectile(playerX, playerY, targetX, targetY,
 					w.getDamage(), w.getRadius());

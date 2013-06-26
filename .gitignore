@@ -3,3 +3,4 @@ GameProject/.settings/*
 GameProject/.classpath
 GameProject/.project
 RemoteSystemsTempFiles/*
+*.class
