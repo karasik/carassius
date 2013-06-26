@@ -3,6 +3,7 @@ package server;
 public class Projectile extends Entity {
 	private int damage;
 	private double radius;
+	private boolean isAlive;
 
 	private int x0, y0;
 	private int x1, y1;
@@ -24,7 +25,7 @@ public class Projectile extends Entity {
 	}
 
 	public Projectile(int playerX, int playerY, int targetX, int targetY,
-			int damage, double radius, Player player) {
+			int damage, double radius) {
 		this.damage = damage;
 		this.radius = radius;
 
@@ -37,8 +38,11 @@ public class Projectile extends Entity {
 		this.setCoord(x0, y0);
 		this.putParameter("walkable", "true");
 		this.putParameter("alive", "true");
-		this.putParameter("move-delay", "2");
-		this.putParameter("type", "0");
+		this.putParameter("move-delay", "1");
+		this.putParameter("type", "3");
+		
+		Map.getInstance().getAllProjectiles().add(this);
+		isAlive = true;
 	}
 
 	public void moveToTarget() {
@@ -49,7 +53,8 @@ public class Projectile extends Entity {
 		if ((getX() != x0 || getY() != y0)
 				&& (!tileMatrix[getX()][getY()].getTile().isWalkable()
 						|| tileMatrix[getX()][getY()].getCreatures().size() > 0 || Math
-						.hypot(getX() - x0, getY() - y0) > radius)) {
+						.hypot(getX() - x0, getY() - y0) > radius ||
+						(getX() == x1 && getY() == y1))) {
 			dissipate();
 		}
 
@@ -61,7 +66,8 @@ public class Projectile extends Entity {
 		} else {
 			tryToMoveTo(getX(), getY() + (int) Math.signum(y1 - getY()));
 		}
-
+		
+		
 	}
 
 	public String getParameterStrings() {
@@ -77,10 +83,12 @@ public class Projectile extends Entity {
 			c.hit(damage);
 		}
 		putParameter("alive", "false");
+		isAlive = false;
 	}
 
 	public boolean isAlive() {
-		return getParameter("alive").equals("true");
+		return isAlive;
+		//return getParameter("alive").equals("true");
 	}
 
 	protected void changeCoord(int x, int y) {
