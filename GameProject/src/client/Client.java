@@ -16,6 +16,7 @@ class Global {
 	static Rectangle visibleFrame;
 	static int tileWidth = 50;
 	static int tileHeight = 50;
+	static int distanceOfView = 8;
 	
 	static int tickCounter = 0;
 	
