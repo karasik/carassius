@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 
 public class Map {
+	
+	Chunk[][] chunks;
+	Map(int xsize, int ysize, ArrayList<Entity> list) {
+		chunks = new Chunk[xsize][ysize];
+	}
+	
 	TreeMap<Integer, Entity> entities;
 	Player player = null;
 	
@@ -20,5 +26,13 @@ public class Map {
 			entities.put(index, new Entity(index));
 		}
 		return entities.get(index);
+	}
+}
+
+class Chunk {
+	TreeMap<Integer, Entity> entities;
+	
+	Chunk() {
+		
 	}
 }

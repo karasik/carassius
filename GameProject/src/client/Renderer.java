@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -42,10 +43,15 @@ class DrawPanel extends JPanel {
 		if(Global.map.player != null)
 			Global.map.player.playerEntity.updatePlayerPosition();	
 		
+		if(Global.visibleFrame == null || Global.map.player == null)
+			return;
+		
 		Point plus = new Point(
 				- Global.map.player.playerEntity.getPosition().x + Global.visibleFrame.width/2 - Global.tileWidth/2,
 				- Global.map.player.playerEntity.getPosition().y + Global.visibleFrame.height/2 - Global.tileHeight/2);
 		
+		
+		Set<Integer> set = new TreeSet<Integer>();
 		synchronized (Global.map) {
 			
 			long time = System.nanoTime();
@@ -69,9 +75,8 @@ class DrawPanel extends JPanel {
 				
 				entity.tile.draw(g, rect, Global.visibleFrame, visible, upToDate);
 			}
-			
+		}	
 			//System.out.println(System.nanoTime() - time + " ns");
-		}
 		
 		
 		Graphics2D g2 = (Graphics2D)g;
