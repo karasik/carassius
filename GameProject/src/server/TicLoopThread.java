@@ -83,7 +83,9 @@ public class TicLoopThread extends Thread {
 		for (Projectile p : Map.getInstance().getAllProjectiles()) {
 			p.moveToTarget();
 		}
-		Map.getInstance().refreshProjectiles();
+		if (Global.time % Global.REFRESH_PROJECTILE_TIME == 0) {
+			Map.getInstance().refreshProjectiles();
+		}
 	}
 
 	private void makePlayersTurns() {
@@ -104,7 +106,7 @@ public class TicLoopThread extends Thread {
 			if (playerX == targetX && playerY == targetY) continue; // не хотет стрелять в себя
 
 			Projectile pr = new Projectile(playerX, playerY, targetX, targetY,
-					w.getDamage(), w.getRadius());
+					w.getDamage(), w.getRadius(), p);
 
 			synchronized (wasMouse) {
 				wasMouse[0] = false;
