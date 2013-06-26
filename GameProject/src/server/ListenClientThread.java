@@ -34,7 +34,7 @@ public class ListenClientThread extends Thread {
 					synchronized (wasButton) {					
 						wasButton[clientId] = true;
 					}
-					Thread.sleep(10);
+					Thread.sleep(30);
 				} else { // мышка. нас интересует id куда было нажато
 					String[] v = s.split(" ");
 					int clickedId = Integer.parseInt(v[1]);
