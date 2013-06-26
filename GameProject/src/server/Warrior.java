@@ -11,6 +11,7 @@ public class Warrior extends Player {
 		putParameter("strength", "10");
 		putParameter("agility", "3");
 		putParameter("inellect", "3");
+		putParameter("mine", "false");
 		
 		setWeapon(new Sword(10));
 	}

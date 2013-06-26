@@ -17,8 +17,8 @@ public class Server {
 		playerSockets = new ArrayList<Socket>();
 		button = new char[Global.NUM_PLAYERS];
 		wasButton = new boolean[Global.NUM_PLAYERS];
-		mouseId = new int[1]; // because need to send ref
-		wasMouse = new boolean[1];
+		mouseId = new int[Global.NUM_PLAYERS];
+		wasMouse = new boolean[Global.NUM_PLAYERS];
 	}
 	
 	public void start() throws IOException, InterruptedException {

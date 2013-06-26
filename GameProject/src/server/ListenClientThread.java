@@ -38,9 +38,9 @@ public class ListenClientThread extends Thread {
 				} else { // мышка. нас интересует id куда было нажато
 					String[] v = s.split(" ");
 					int clickedId = Integer.parseInt(v[1]);
-					mouseId[0] = clickedId;
+					mouseId[clientId] = clickedId;
 					synchronized (wasMouse) {					
-						wasMouse[0] = true;
+						wasMouse[clientId] = true;
 					}
 					Thread.sleep(Global.DELAY);
 				}

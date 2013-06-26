@@ -92,13 +92,13 @@ public class TicLoopThread extends Thread {
 
 		// обрабатываем мышь
 		for (int i = 0; i < Global.NUM_PLAYERS; i++) {
-			if (!wasMouse[0])
+			if (!wasMouse[i])
 				continue;
 			Player p = Map.getInstance().getPlayer(i);
 			Weapon w = p.getWeapon();
 			if (w == null)
 				continue; // если нет оружия, то щито поделать десу
-			Entity e = Map.getInstance().getEntityFromId(mouseId[0]);
+			Entity e = Map.getInstance().getEntityFromId(mouseId[i]);
 
 			int playerX = p.getX(), playerY = p.getY();
 			int targetX = e.getX(), targetY = e.getY();
@@ -109,7 +109,7 @@ public class TicLoopThread extends Thread {
 					w.getDamage(), w.getRadius(), p);
 
 			synchronized (wasMouse) {
-				wasMouse[0] = false;
+				wasMouse[i] = false;
 			}
 		}
 		// обрабатываем клавиатуру
