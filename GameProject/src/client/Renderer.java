@@ -57,9 +57,12 @@ class DrawPanel extends JPanel {
 					entity.getPositionRect().height
 					);
 			
-			boolean visible = entity.getTick() == Global.tickCounter-1;
+			double distance = Global.distanceOfView * Global.tileHeight + 1e-6;
+			boolean visible = Math.hypot(entity.getPosition().x - Global.cameraPosition.x + Global.tileWidth/2, 
+					entity.getPosition().y - Global.cameraPosition.y + Global.tileHeight/2) <= distance;
+			boolean upToDate = entity.getTick() == Global.tickCounter-1;
 			
-			entity.tile.draw(g, rect, Global.visibleFrame, visible);
+			entity.tile.draw(g, rect, Global.visibleFrame, visible, upToDate);
 		}
 		
 		

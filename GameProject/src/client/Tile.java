@@ -27,7 +27,10 @@ public class Tile {
 	
 	private BufferedImage image;
 	
-	public void draw(Graphics g, Rectangle rect, Rectangle frame, boolean visible) {
+	public void draw(Graphics g, Rectangle rect, Rectangle frame, boolean visible, boolean upToDate) {
+		if(visible && !upToDate)
+			return;
+		
 		Graphics2D g2 = (Graphics2D)g;
 		
 		Rectangle fillRect = (Rectangle)rect.clone();
