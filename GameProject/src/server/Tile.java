@@ -9,6 +9,7 @@ public class Tile extends Entity {
 	public Tile(int x, int y, boolean walkable) {
 		putParameter("x", x + "");
 		putParameter("y", y + "");
+		putParameter("tile", "true");
 		this.walkable = walkable;
 		putParameter("type", walkable ? "1" : "0");
 	}
