@@ -2,6 +2,7 @@ package server;
 
 import java.util.ArrayList;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class Map {
 	private TileContainer[][] tileMatrix;
@@ -9,6 +10,7 @@ public class Map {
 	private ArrayList<Player> players;
 	private ArrayList<Projectile> allProjectiles;
 	private TreeMap<Integer, Entity> entityMap;
+	private TreeSet<Entity> changeBuffer;
 	private static Map instance;
 	
 	public static Map getInstance() {
@@ -26,6 +28,7 @@ public class Map {
 		entityMap = new TreeMap<Integer, Entity>();
 		players = new ArrayList<Player>();
 		allProjectiles = new ArrayList<Projectile>();
+		changeBuffer = new TreeSet<Entity>();
 	}
 	
 	private void generateMap(int n, int m) {
@@ -85,5 +88,9 @@ public class Map {
 			if (p.isAlive()) tmp.add(p);
 		}
 		allProjectiles = tmp;
+	}
+	
+	public TreeSet<Entity> getChangeBuffer() {
+		return changeBuffer;
 	}
 }

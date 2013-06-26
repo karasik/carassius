@@ -18,6 +18,7 @@ public abstract class Entity {
 	
 	public void putParameter(String key, String value) {
 		parameters.put(key, value);
+		Map.getInstance().getChangeBuffer().add(this);
 	}
 	
 	public String getParameter(String key) {

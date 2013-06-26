@@ -40,7 +40,6 @@ public class TileContainer {
 		creatures.add(c);
 	}
 
-
 	public void removeCreature(Creature c) {
 		creatures.remove(c);
 	}

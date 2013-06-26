@@ -50,28 +50,34 @@ public class Projectile extends Entity {
 			return;
 		TileContainer[][] tileMatrix = Map.getInstance().getTileMatrix();
 
-		if ((!tileMatrix[getX()][getY()].getTile().isWalkable()
-				|| Math.hypot(getX() - x0, getY() - y0) > radius 
+		int dx = Math.abs(x1 - getX());
+		int dy = Math.abs(y1 - getY());
+		double r = (dy + 0.) / (dx + 0.);
+		int mx = 0, my = 0;
+		if (r > Math.sqrt(3)) {
+			mx = 0;
+			my = (int) Math.signum(y1 - getY());	
+		} else if (r > 1. / Math.sqrt(3)) {
+			mx = (int) Math.signum(x1 - getX());
+			my = (int) Math.signum(y1 - getY());
+		} else {
+			mx = (int) Math.signum(x1 - getX());
+			my = 0;
+		}
+		int X = getX() + mx, Y = getY() + my;
+
+		if ((!tileMatrix[X][Y].getTile().isWalkable()
+				|| Math.hypot(X - x0, Y - y0) > radius 
 				|| (getX() == x1 && getY() == y1))) {
 			dissipate();
 			return;
 		}
-		
-		if (tileMatrix[getX()][getY()].getCreatures().size() > 0 
-				&& !tileMatrix[getX()][getY()].getCreatures().get(0).equals(author)) {
+		if (tileMatrix[X][Y].getCreatures().size() > 0 
+				&& !tileMatrix[X][Y].getCreatures().get(0).equals(author)) {
 			dissipate();
 			return;
 		}
-
-		int dx = Math.abs(x1 - getX());
-		int dy = Math.abs(y1 - getY());
-
-		if (dx >= dy) {
-			tryToMoveTo(getX() + (int) Math.signum(x1 - getX()), getY());
-		} else {
-			tryToMoveTo(getX(), getY() + (int) Math.signum(y1 - getY()));
-		}
-
+		tryToMoveTo(X, Y);
 	}
 
 	public String getParameterStrings() {
@@ -84,7 +90,9 @@ public class Projectile extends Entity {
 	private void dissipate() {
 		TileContainer[][] tileMatrix = Map.getInstance().getTileMatrix();
 		for (Creature c : tileMatrix[getX()][getY()].getCreatures()) {
-			c.hit(damage);
+			if (!c.equals(author)) {
+				c.hit(damage);
+			}
 		}
 		putParameter("alive", "false");
 		isAlive = false;
