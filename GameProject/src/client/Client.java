@@ -89,6 +89,8 @@ public class Client {
 					en.setParametr(Constants.PARAM_TICK, Global.tickCounter+"");
 				}
 			}
+			
+			Global.tickCounter++;
 		}
 		
 		
@@ -125,10 +127,7 @@ public class Client {
 		
 	}
 	
-	
-	
 	Map map;
-	
 	
 	public static void main(String[] argv) throws IOException {
 		Client client = new Client();

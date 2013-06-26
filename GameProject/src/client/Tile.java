@@ -27,8 +27,8 @@ public class Tile {
 	
 	private BufferedImage image;
 	
-	public void draw(Graphics g, Rectangle rect, Rectangle frame, boolean visible, boolean upToDate) {
-		if(visible && !upToDate)
+	public void draw(Graphics g, Rectangle rect, Rectangle frame, boolean visible, boolean upToDate, boolean isTile) {
+		if(visible && !upToDate && !isTile)
 			return;
 		
 		Graphics2D g2 = (Graphics2D)g;
