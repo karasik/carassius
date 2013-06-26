@@ -59,8 +59,8 @@ public class Client {
 		
 		Socket socket = null;
 		try {
-			socket = new Socket("localhost", 8080);
-			//socket = new Socket("89.249.165.202", 8080);
+			//socket = new Socket("localhost", 8080);
+			socket = new Socket("89.249.160.150", 8080);
 			Global.socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			Global.socketWriter = new PrintWriter( new OutputStreamWriter( socket.getOutputStream()), true );
 		} catch (IOException e1) {
@@ -115,7 +115,7 @@ public class Client {
 					
 						en.setParametr(key, value);
 					
-						if(key.equals(Constants.PARAM_MINE) )
+						if(key.equals(Constants.PARAM_MINE) && value.equals("true") )
 							Global.map.player = new Player(en);
 					}
 					en.setParametr(Constants.PARAM_TICK, Global.tickCounter+"");
