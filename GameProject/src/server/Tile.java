@@ -4,16 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Tile extends Entity {
+	private boolean walkable;
+	
 	public Tile(int x, int y, boolean walkable) {
 		putParameter("x", x + "");
 		putParameter("y", y + "");
-		putParameter("walkable", walkable + "");
-		putParameter("visible", "true");
+		this.walkable = walkable;
 		putParameter("type", walkable ? "1" : "0");
 	}
 	
 	public boolean isWalkable() {
-		return this.getParameter("walkable").equals("true");
+		return walkable;
 	}
 
 	@Override
@@ -23,7 +24,6 @@ public class Tile extends Entity {
 
 	@Override
 	public void changeCoord(int x, int y) {
-		// TODO Auto-generated method stub
 		
 	}
 

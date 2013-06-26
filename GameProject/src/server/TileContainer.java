@@ -19,7 +19,7 @@ public class TileContainer {
 
 	public String getInfo() {
 		String ret = "";
-		ret += tile.getParameterStrings();
+		//ret += tile.getParameterStrings();
 		for (Item e : items) {
 			ret += e.getParameterStrings();
 		}
