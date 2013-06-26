@@ -59,8 +59,8 @@ public class Client {
 		
 		Socket socket = null;
 		try {
-			//socket = new Socket("localhost", 8080);
 			socket = new Socket("localhost", 8080);
+			//socket = new Socket("89.249", 8080);
 			Global.socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			Global.socketWriter = new PrintWriter( new OutputStreamWriter( socket.getOutputStream()), true );
 		} catch (IOException e1) {
