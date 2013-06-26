@@ -65,12 +65,21 @@ public class Entity {
 	
 	void setTile(Tile[] tiles) {
 		tile = tiles[Integer.parseInt(getParametr(Constants.PARAM_TYPE))%tiles.length];
-		//tile = (getParametr(PARAM_TYPE).equals("1")) ? tile1 : tile0;
+	}
+	
+	int getHP() {
+		return Integer.parseInt(parametrs.get(Constants.PARAM_HP) );
+	}
+	
+	int getTick() {
+		return Integer.parseInt(getParametr(Constants.PARAM_TICK) );
 	}
 	
 	void updatePlayerPosition() {
 		if(getParametr(Constants.PARAM_MINE).equals("true")) {
 			Global.cameraPosition = getPosition();
+			Global.cameraPosition.x += Global.tileWidth/2;
+			Global.cameraPosition.y += Global.tileHeight/2;
 		}
 	}
 	

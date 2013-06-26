@@ -1,22 +1,27 @@
 package client;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class Renderer extends JFrame {
-	
+	JTextField textField = null;
+	DrawPanel panel = null;
 	
 	public Renderer() {
-		DrawPanel panel = new DrawPanel();
+		panel = new DrawPanel();
 		add(panel);
 		
 		setTitle("Game");
 	    setSize(Global.visibleFrame.width, Global.visibleFrame.height);
 	    setLocationRelativeTo(null);
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
+	    
 	}
 }
 
@@ -36,11 +41,9 @@ class DrawPanel extends JPanel {
 		if(Global.map.player != null)
 			Global.map.player.playerEntity.updatePlayerPosition();	
 		
-		//System.out.println(Global.cameraPosition);
-		
 		Point plus = new Point(
-				- Global.map.player.playerEntity.getPosition().x + Global.visibleFrame.width/2,
-				- Global.map.player.playerEntity.getPosition().y + Global.visibleFrame.height/2);
+				- Global.map.player.playerEntity.getPosition().x + Global.visibleFrame.width/2 - Global.tileWidth/2,
+				- Global.map.player.playerEntity.getPosition().y + Global.visibleFrame.height/2 - Global.tileHeight/2);
 		
 		for(Entity entity : Global.map.entities.values()) {
 			if(entity.tile == null) {
@@ -54,8 +57,18 @@ class DrawPanel extends JPanel {
 					entity.getPositionRect().height
 					);
 			
-			entity.tile.draw(g, rect, Global.visibleFrame);
+			boolean visible = entity.getTick() == Global.tickCounter-1;
+			
+			entity.tile.draw(g, rect, Global.visibleFrame, visible);
 		}
+		
+		
+		Graphics2D g2 = (Graphics2D)g;
+		String message = "HP: " + Global.map.player.getHP();
+		Font f = new Font("Dante", 1, 20);
+		g.setFont(f);
+		g2.setPaint(getForeground());
+		g.drawChars(message.toCharArray(), 0, message.length(), 20, 20);
 	}
 	
     @Override
