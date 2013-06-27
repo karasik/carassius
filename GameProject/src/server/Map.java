@@ -100,7 +100,7 @@ public class Map {
 	public void refreshProjectiles() {
 		ArrayList<Projectile> tmp = new ArrayList<Projectile>();
 		for (Projectile p : allProjectiles) {
-			if (p.isAlive())
+			if (!p.getDeathSent())
 				tmp.add(p);
 		}
 		allProjectiles = tmp;
