@@ -8,10 +8,8 @@ import java.util.ArrayList;
 public class TicLoopThread extends Thread {
 	private ArrayList<Socket> playerSockets;
 	private ArrayList<PrintWriter> playerStreams;
-	
 
-	public TicLoopThread(ArrayList<Socket> playerSockets)
-			throws IOException {
+	public TicLoopThread(ArrayList<Socket> playerSockets) throws IOException {
 		this.playerSockets = playerSockets;
 		playerStreams = new ArrayList<PrintWriter>();
 		for (Socket s : playerSockets) {
@@ -27,7 +25,7 @@ public class TicLoopThread extends Thread {
 				Map.getInstance().moveProjectiles();
 				Map.getInstance().makePlayersTurns();
 				sendInfo();
-				
+
 				Thread.sleep(Global.DELAY);
 				Global.time++;
 			}
@@ -37,7 +35,7 @@ public class TicLoopThread extends Thread {
 	}
 
 	private void sendTiles() {
-		for (int i=0; i<playerSockets.size(); i++) {
+		for (int i = 0; i < playerSockets.size(); i++) {
 			PrintWriter stream = playerStreams.get(i);
 			// выдаем тайлы
 			stream.println(Map.getInstance().getTileMatrix().length);
@@ -61,14 +59,11 @@ public class TicLoopThread extends Thread {
 				}
 			}
 			// мы меняемся
-			Map.getInstance().getPlayer(i)
-					.putParameter("mine", "false");
+			Map.getInstance().getPlayer(i).putParameter("mine", "false");
 			stream.println("RENDER");
 			stream.flush();
 		}
 
-		
 	}
 
-	
 }

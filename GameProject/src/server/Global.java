@@ -5,6 +5,6 @@ public class Global {
 	public static final int NUM_PLAYERS = 1;
 	public static final int DELAY = 100;
 	public static final int REFRESH_PROJECTILE_TIME = 10;
-	
+
 	public static int time = 0;
 }

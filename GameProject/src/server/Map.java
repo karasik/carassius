@@ -10,35 +10,35 @@ public class Map {
 	private ArrayList<Player> players;
 	private ArrayList<Projectile> allProjectiles;
 	private TreeMap<Integer, Entity> entityMap;
-//	private TreeSet<Entity> changeBuffer;
+	// private TreeSet<Entity> changeBuffer;
 	private char[] button;
 	private boolean[] wasButton;
 	private int[] mouseId;
 	private boolean[] wasMouse;
 	private static Map instance;
-	
+
 	public static Map getInstance() {
 		return instance;
 	}
-	
+
 	public static void initialize(int n, int m) {
 		if (instance == null) {
 			instance = new Map();
 			instance.generateMap(n, m);
 		}
 	}
-	
+
 	private Map() {
 		entityMap = new TreeMap<Integer, Entity>();
 		players = new ArrayList<Player>();
 		allProjectiles = new ArrayList<Projectile>();
-//		changeBuffer = new TreeSet<Entity>();
+		// changeBuffer = new TreeSet<Entity>();
 		button = new char[Global.NUM_PLAYERS];
 		wasButton = new boolean[Global.NUM_PLAYERS];
 		mouseId = new int[Global.NUM_PLAYERS];
 		wasMouse = new boolean[Global.NUM_PLAYERS];
 	}
-	
+
 	private void generateMap(int n, int m) {
 		tileMatrix = MapGenerator.generateNormalMap(n, m);
 		tileList = new ArrayList<TileContainer>();
@@ -48,11 +48,11 @@ public class Map {
 			}
 		}
 	}
-	
+
 	public TileContainer[][] getTileMatrix() {
 		return tileMatrix;
 	}
-	
+
 	public ArrayList<TileContainer> getTileList() {
 		return tileList;
 	}
@@ -60,20 +60,19 @@ public class Map {
 	public void addWarrior(int i) {
 		int x = 3, y = 3 + i;
 		Warrior c = new Warrior(i, x, y);
-		
-		players.add(i, (Player)c);
-		tileMatrix[x][y].addCreature((Creature)c);
+
+		players.add(i, (Player) c);
+		tileMatrix[x][y].addCreature((Creature) c);
 	}
 
 	public Player getPlayer(int i) {
 		return players.get(i);
 	}
 
-	
 	public void putEntityInMap(Entity e) {
 		entityMap.put(e.getGlobalId(), e);
 	}
-	
+
 	public Entity getEntityFromId(int globalId) {
 		return entityMap.get(globalId);
 	}
@@ -81,7 +80,7 @@ public class Map {
 	public void addProjectile(Projectile pr) {
 		tileMatrix[pr.getX()][pr.getY()].addProjectile(pr);
 	}
-	
+
 	public void removeProjectile(Projectile pr) {
 		tileMatrix[pr.getX()][pr.getY()].removeProjectile(pr);
 	}
@@ -89,15 +88,16 @@ public class Map {
 	public ArrayList<Projectile> getAllProjectiles() {
 		return allProjectiles;
 	}
-	
+
 	public void refreshProjectiles() {
 		ArrayList<Projectile> tmp = new ArrayList<Projectile>();
 		for (Projectile p : allProjectiles) {
-			if (p.isAlive()) tmp.add(p);
+			if (p.isAlive())
+				tmp.add(p);
 		}
 		allProjectiles = tmp;
 	}
-	
+
 	public void moveProjectiles() {
 		// обрабатываем все летящие хрени
 		for (Projectile p : Map.getInstance().getAllProjectiles()) {
@@ -122,8 +122,9 @@ public class Map {
 
 			int playerX = p.getX(), playerY = p.getY();
 			int targetX = e.getX(), targetY = e.getY();
-			
-			if (playerX == targetX && playerY == targetY) continue; // не хотет стрелять в себя
+
+			if (playerX == targetX && playerY == targetY)
+				continue; // не хотет стрелять в себя
 
 			Projectile pr = new Projectile(playerX, playerY, targetX, targetY,
 					w.getDamage(), w.getRadius(), p);
@@ -165,22 +166,22 @@ public class Map {
 			}
 		}
 	}
-	
+
 	public void putButton(int clientId, char c) {
 		button[clientId] = c;
-		synchronized (wasButton) {					
+		synchronized (wasButton) {
 			wasButton[clientId] = true;
 		}
 	}
-	
+
 	public void putMouse(int clientId, int clickedId) {
 		mouseId[clientId] = clickedId;
-		synchronized (wasMouse) {					
+		synchronized (wasMouse) {
 			wasMouse[clientId] = true;
 		}
 	}
-	
-//	public TreeSet<Entity> getChangeBuffer() {
-//		return changeBuffer;
-//	}
+
+	// public TreeSet<Entity> getChangeBuffer() {
+	// return changeBuffer;
+	// }
 }

@@ -2,7 +2,6 @@ package server;
 
 public class Item extends Entity {
 
-
 	public void changeCoord(int x, int y) {
 		TileContainer[][] tileMatrix = Map.getInstance().getTileMatrix();
 		tileMatrix[getX()][getY()].removeItem(this);
