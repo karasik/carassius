@@ -84,12 +84,11 @@ public class Projectile extends Entity {
 
 	private void dissipate(int X, int Y) {
 		TileContainer[][] tileMatrix = Map.getInstance().getTileMatrix();
-		for (Creature c : tileMatrix[X][X].getCreatures()) {
+		for (Creature c : tileMatrix[X][Y].getCreatures()) {
 			if (!c.equals(author)) {
 				c.hit(damage);
 			}
 		}
-		putParameter("alive", "false");
 		isAlive = false;
 	}
 	
