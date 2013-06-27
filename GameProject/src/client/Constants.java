@@ -13,5 +13,6 @@ public class Constants {
 	static final String PARAM_HP = "hp";
 	static final String PARAM_TICK = "tick";
 	static final String PARAM_TILE = "tile";
+	static final String PARAM_ALIVE = "alive";
 	/////////////////////////////////////////////////////////////
 }

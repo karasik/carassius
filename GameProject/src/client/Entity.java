@@ -80,6 +80,11 @@ public class Entity {
 		return s != null && Boolean.parseBoolean(s);
 	}
 	
+	boolean isDead() {
+		String s = getParametr(Constants.PARAM_TILE);
+		return s != null && !Boolean.parseBoolean(s);
+	}
+	
 	void updatePlayerPosition() {
 		if(getParametr(Constants.PARAM_MINE).equals("true")) {
 			Global.cameraPosition = getPosition();
