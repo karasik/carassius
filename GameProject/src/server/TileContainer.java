@@ -13,13 +13,13 @@ public class TileContainer {
 		items = new ArrayList<Item>();
 		projectiles = new ArrayList<Projectile>();
 		creatures = new ArrayList<Creature>();
-		
+
 		tile = new Tile(x, y, walkable);
 	}
 
 	public String getInfo() {
 		String ret = "";
-		//ret += tile.getParameterStrings();
+		// ret += tile.getParameterStrings();
 		for (Item e : items) {
 			ret += e.getParameterStrings();
 		}
@@ -33,18 +33,18 @@ public class TileContainer {
 	}
 
 	public boolean isVisibleBy(Entity entity) {
-		return Math.hypot(tile.getX() - entity.getX(), tile.getY() - entity.getY()) <= Global.VISIBLE_DISTANCE;
+		return Math.hypot(tile.getX() - entity.getX(),
+				tile.getY() - entity.getY()) <= Global.VISIBLE_DISTANCE;
 	}
 
 	public void addCreature(Creature c) {
 		creatures.add(c);
 	}
 
-
 	public void removeCreature(Creature c) {
 		creatures.remove(c);
 	}
-	
+
 	public Tile getTile() {
 		return tile;
 	}
@@ -52,18 +52,18 @@ public class TileContainer {
 	public void addProjectile(Projectile pr) {
 		projectiles.add(pr);
 	}
-	
+
 	public void removeProjectile(Projectile pr) {
 		projectiles.remove(pr);
 	}
-	
+
 	public ArrayList<Projectile> getProjectiles() {
 		return projectiles;
 	}
 
 	public void addItem(Item item) {
 		items.add(item);
-		
+
 	}
 
 	public void removeItem(Item item) {
@@ -93,5 +93,5 @@ public class TileContainer {
 	public void setTile(Tile tile) {
 		this.tile = tile;
 	}
-	
+
 }

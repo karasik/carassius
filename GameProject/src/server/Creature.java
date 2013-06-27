@@ -3,7 +3,6 @@ package server;
 public class Creature extends Entity {
 	private Weapon weapon;
 	
-	
 	public Creature() {
 		putParameter("walkable", "false");
 		putParameter("alive", "true");
