@@ -43,12 +43,11 @@ public class Client {
 	public Client() throws IOException {
 		
 		Global.tiles = new Tile[] {
-				new Tile("tank.jpg"),
-				new Tile("grass.jpg"),
-				new Tile("picture.jpg"),
-				new Tile("fail.jpg"),
-				new Tile("4.jpg")
-				
+				new Tile("wall.png"),
+				new Tile("floor.jpg"),
+				new Tile("warrior.png"),
+				new Tile("fireball.png"),
+				new Tile("mage.png")
 		};
 		
 		Global.cameraPosition = new Point(0, 0);
@@ -65,11 +64,8 @@ public class Client {
 		Socket socket = null;
 		try {
 			socket = new Socket("localhost", 8080);
-<<<<<<< HEAD
 //			socket = new Socket("192.168.77.1", 8080);
-=======
 			//socket = new Socket("192.168.77.1", 8080);
->>>>>>> master
 			
 			Global.socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			Global.socketWriter = new PrintWriter( new OutputStreamWriter( socket.getOutputStream()), true );

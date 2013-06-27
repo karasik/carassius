@@ -19,6 +19,7 @@ public class Tile {
 	private void loadImage(String name) {
 		try {
 			image = ImageIO.read(this.getClass().getResource("../img/" + name));
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -54,6 +55,7 @@ public class Tile {
 		
 		
 		g2.setPaint(paint);
+	
 		
 		g2.fillRect(clamp(rect.x, frame.x, frame.x + frame.width),
 					clamp(rect.y, frame.y, frame.y + frame.height),

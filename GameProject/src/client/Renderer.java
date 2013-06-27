@@ -33,11 +33,6 @@ class DrawPanel extends JPanel {
 	Tile tile;
 	
 	public DrawPanel() {
-		loadImages();
-	}
-	
-	private void loadImages() {
-		tile = new Tile("picture.jpg");
 	}
 	
 	private void drawMap(Graphics g) {
