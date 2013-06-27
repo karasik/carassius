@@ -51,6 +51,10 @@ public class Creature extends Entity {
 	private boolean isAlive() {
 		return isAlive;
 	}
+	
+	private void setAlive(boolean b) {
+		isAlive = b;
+	}
 
 	public void changeCoord(int x, int y) {
 		TileContainer[][] tileMatrix = Map.getInstance().getTileMatrix();
@@ -72,7 +76,7 @@ public class Creature extends Entity {
 		hp = Math.max(0, hp - damage);
 		this.putParameter("hp", hp + "");
 		if (hp == 0) {
-			this.putParameter("alive", "false");
+			setAlive(false);
 		}
 	}
 	
