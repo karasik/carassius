@@ -56,7 +56,6 @@ class DrawPanel extends JPanel {
 				- Global.map.player.playerEntity.getPosition().y + Global.visibleFrame.height/2 - Global.tileHeight/2);
 		
 		
-		Set<Integer> set = new TreeSet<Integer>();
 		synchronized (Global.map) {
 			
 			ArrayList<Collection<Entity>> list =
