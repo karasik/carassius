@@ -4,11 +4,14 @@ public class Creature extends Entity {
 	private Weapon weapon;
 	private boolean isAlive;
 	private boolean deathSent;
+	private int deathTime;
 	
 	public Creature() {
 		putParameter("walkable", "false");
 		isAlive = true;
 		deathSent = false;
+		
+		deathTime = Integer.MAX_VALUE;
 	}
 	
 	public void setWeapon(Weapon w) {
@@ -29,14 +32,16 @@ public class Creature extends Entity {
 	}
 	
 	public String getParameterStrings() {
-		if (!getDeathSent()) {
-			if (!isAlive()) {
+		if (getDeathSent()) return "";
+		if (!isAlive()) {
+			if (deathTime < Global.time) {
 				setDeathSent(true);
-				this.putParameter("alive", "false");
+				return "";
 			}
-			return super.getParameterStrings();
+			deathTime = Global.time;
+			this.putParameter("alive", "false");
 		}
-		return "";
+		return super.getParameterStrings();
 	}
 
 

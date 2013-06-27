@@ -9,6 +9,7 @@ public class Projectile extends Entity {
 	private int x0, y0;
 	private int x1, y1;
 	private boolean deathSent;
+	private int deathTime;
 
 	public int getDamage() {
 		return damage;
@@ -45,6 +46,7 @@ public class Projectile extends Entity {
 		isAlive = true;
 		author = p;
 		deathSent = false;
+		deathTime = Integer.MAX_VALUE;
 	}
 
 	public void moveToTarget() {
@@ -95,7 +97,11 @@ public class Projectile extends Entity {
 	public String getParameterStrings() {
 		if (getDeathSent()) return "";
 		if (!isAlive()) {
-			setDeathSent(true);
+			if (deathTime < Global.time) {
+				setDeathSent(true);
+				return "";
+			}
+			deathTime = Global.time;
 			this.putParameter("alive", "false");
 		}
 		return super.getParameterStrings();
