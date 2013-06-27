@@ -1,5 +1,6 @@
 package server;
 
+import java.util.Comparator;
 import java.util.TreeMap;
 
 
@@ -11,14 +12,23 @@ public abstract class Entity {
 	
 	public Entity() {
 		globalId = Entity.nextGlobalId++;
-		parameters = new TreeMap<String, String>();
+		parameters = new TreeMap<String, String>(new Comparator<String>() {
+			public int compare(String a, String b) {
+				if (a.equals("x")) return -1;
+				if (b.equals("x")) return 1;
+				if (a.equals("y")) return -1;
+				if (b.equals("y")) return 1;
+				
+				return a.compareTo(b);
+			}
+		});
 		Map.getInstance().putEntityInMap(this);
 		lastMoveTime = Integer.MIN_VALUE / 2;
 	}
 	
 	public void putParameter(String key, String value) {
 		parameters.put(key, value);
-		Map.getInstance().getChangeBuffer().add(this);
+//		Map.getInstance().getChangeBuffer().add(this);
 	}
 	
 	public String getParameter(String key) {

@@ -8,19 +8,11 @@ import java.net.Socket;
 public class ListenClientThread extends Thread {
 	private int clientId;
 	private BufferedReader in;
-	private char[] button;
-	private boolean[] wasButton;
-	private int[] mouseId;
-	private boolean[] wasMouse;
 
-	public ListenClientThread(int clientId, Socket s, char[] button, boolean[] wasButton, int[] mouseId, boolean[] wasMouse)
+	public ListenClientThread(int clientId, Socket s)
 			throws IOException {
 		this.clientId = clientId;
 		in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-		this.button = button;
-		this.wasButton = wasButton;
-		this.mouseId = mouseId;
-		this.wasMouse = wasMouse;
 	}
 
 	public void run() {
@@ -30,18 +22,12 @@ public class ListenClientThread extends Thread {
 				if (s.length() == 0) continue;
 				if (s.length() == 1) { // это нажатие с клавиатуры пришло
 					char c = s.charAt(0);
-					button[clientId] = c;
-					synchronized (wasButton) {					
-						wasButton[clientId] = true;
-					}
+					Map.getInstance().putButton(clientId, c);
 					Thread.sleep(Global.DELAY);
 				} else { // мышка. нас интересует id куда было нажато
 					String[] v = s.split(" ");
 					int clickedId = Integer.parseInt(v[1]);
-					mouseId[clientId] = clickedId;
-					synchronized (wasMouse) {					
-						wasMouse[clientId] = true;
-					}
+					Map.getInstance().putMouse(clientId, clickedId);
 					Thread.sleep(Global.DELAY);
 				}
 			}
