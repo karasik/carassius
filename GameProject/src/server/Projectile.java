@@ -69,12 +69,12 @@ public class Projectile extends Entity {
 		if ((!tileMatrix[X][Y].getTile().isWalkable()
 				|| Math.hypot(X - x0, Y - y0) > radius 
 				|| (getX() == x1 && getY() == y1))) {
-			dissipate();
+			dissipate(X, Y);
 			return;
 		}
 		if (tileMatrix[X][Y].getCreatures().size() > 0 
 				&& !tileMatrix[X][Y].getCreatures().get(0).equals(author)) {
-			dissipate();
+			dissipate(X, Y);
 			return;
 		}
 		tryToMoveTo(X, Y);
@@ -87,9 +87,9 @@ public class Projectile extends Entity {
 		return "";
 	}
 
-	private void dissipate() {
+	private void dissipate(int X, int Y) {
 		TileContainer[][] tileMatrix = Map.getInstance().getTileMatrix();
-		for (Creature c : tileMatrix[getX()][getY()].getCreatures()) {
+		for (Creature c : tileMatrix[X][X].getCreatures()) {
 			if (!c.equals(author)) {
 				c.hit(damage);
 			}
