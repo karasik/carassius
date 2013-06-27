@@ -46,7 +46,9 @@ public class Client {
 				new Tile("tank.jpg"),
 				new Tile("grass.jpg"),
 				new Tile("picture.jpg"),
-				new Tile("fail.jpg")
+				new Tile("fail.jpg"),
+				new Tile("4.jpg")
+				
 		};
 		
 		Global.cameraPosition = new Point(0, 0);

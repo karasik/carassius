@@ -2,10 +2,13 @@ package server;
 
 public class Creature extends Entity {
 	private Weapon weapon;
+	private boolean isAlive;
+	private boolean deathSent;
 	
 	public Creature() {
 		putParameter("walkable", "false");
-		putParameter("alive", "true");
+		isAlive = true;
+		deathSent = false;
 	}
 	
 	public void setWeapon(Weapon w) {
@@ -26,15 +29,27 @@ public class Creature extends Entity {
 	}
 	
 	public String getParameterStrings() {
-		if (isAlive()) {
+		if (!getDeathSent()) {
+			if (!isAlive()) {
+				setDeathSent(true);
+				this.putParameter("alive", "false");
+			}
 			return super.getParameterStrings();
 		}
 		return "";
 	}
 
 
+	private void setDeathSent(boolean b) {
+		deathSent = b;
+	}
+
+	private boolean getDeathSent() {
+		return deathSent;
+	}
+
 	private boolean isAlive() {
-		return getParameter("alive").equals("true");
+		return isAlive;
 	}
 
 	public void changeCoord(int x, int y) {

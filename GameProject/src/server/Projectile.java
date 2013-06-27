@@ -8,6 +8,7 @@ public class Projectile extends Entity {
 
 	private int x0, y0;
 	private int x1, y1;
+	private boolean deathSent;
 
 	public int getDamage() {
 		return damage;
@@ -43,6 +44,7 @@ public class Projectile extends Entity {
 		Map.getInstance().getAllProjectiles().add(this);
 		isAlive = true;
 		author = p;
+		deathSent = false;
 	}
 
 	public void moveToTarget() {
@@ -69,27 +71,20 @@ public class Projectile extends Entity {
 		if ((!tileMatrix[X][Y].getTile().isWalkable()
 				|| Math.hypot(X - x0, Y - y0) > radius 
 				|| (getX() == x1 && getY() == y1))) {
-			dissipate();
+			dissipate(X, Y);
 			return;
 		}
 		if (tileMatrix[X][Y].getCreatures().size() > 0 
 				&& !tileMatrix[X][Y].getCreatures().get(0).equals(author)) {
-			dissipate();
+			dissipate(X, Y);
 			return;
 		}
 		tryToMoveTo(X, Y);
 	}
 
-	public String getParameterStrings() {
-		if (isAlive()) {
-			return super.getParameterStrings();
-		}
-		return "";
-	}
-
-	private void dissipate() {
+	private void dissipate(int X, int Y) {
 		TileContainer[][] tileMatrix = Map.getInstance().getTileMatrix();
-		for (Creature c : tileMatrix[getX()][getY()].getCreatures()) {
+		for (Creature c : tileMatrix[X][X].getCreatures()) {
 			if (!c.equals(author)) {
 				c.hit(damage);
 			}
@@ -97,10 +92,28 @@ public class Projectile extends Entity {
 		putParameter("alive", "false");
 		isAlive = false;
 	}
+	
+	public String getParameterStrings() {
+		if (!getDeathSent()) {
+			if (!isAlive()) {
+				setDeathSent(true);
+				this.putParameter("alive", "false");
+			}
+			return super.getParameterStrings();
+		}
+		return "";
+	}
+
+	private void setDeathSent(boolean b) {
+		deathSent = b;
+	}
+
+	public boolean getDeathSent() {
+		return deathSent;
+	}
 
 	public boolean isAlive() {
 		return isAlive;
-		// return getParameter("alive").equals("true");
 	}
 
 	protected void changeCoord(int x, int y) {

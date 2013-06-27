@@ -20,7 +20,12 @@ public class Server {
 		for (int i = 0; i < Global.NUM_PLAYERS; i++) {
 			playerSockets.add(s.accept());
 			// здесь нужно сделать игрока соответствующего класса
-			Map.getInstance().addWarrior(i);
+			switch (i) {
+			case 0: Map.getInstance().addWarrior(i); break;
+			case 1: Map.getInstance().addArcher(i); break;
+			default:break;
+			}
+			
 			new ListenClientThread(i, playerSockets.get(i)).start();
 		}
 		// ура! у меня есть все клиенты и теперь я с ними могу работать
