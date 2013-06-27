@@ -30,14 +30,14 @@ public class Map
 			int x = entity.getPosition().x;
 			int y = entity.getPosition().y;
 			
-			getChunk(y, x).entities.put(entity.globalId, entity);
+			getChunkByPostion(y, x).entities.put(entity.globalId, entity);
 			
 			Point point = Chunk.getChunkNumber(y, x);
 			idToChunk.put(entity.globalId, point);
 		}
 	}	
 	
-	private Chunk getChunk(int y, int x) {
+	private Chunk getChunkByPostion(int y, int x) {
 		Point point = Chunk.getChunkNumber(y, x);
 		return chunks[point.y][point.x];
 	}
@@ -90,6 +90,12 @@ public class Map
 			map.put(index, new Entity(index));
 		}
 		return map.get(index);
+	}
+	
+	void removeEntity(Entity entity) {
+		Point chunkN = idToChunk.get(entity.globalId);
+		chunks[chunkN.y][chunkN.x].entities.remove(entity.globalId);
+		idToChunk.remove(entity.globalId);
 	}
 	
 	void moveEntity(Entity entity, int ycoord, int xcoord) {

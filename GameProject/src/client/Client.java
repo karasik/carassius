@@ -64,6 +64,7 @@ public class Client {
 		
 		Socket socket = null;
 		try {
+<<<<<<< HEAD
 			//socket = new Socket("localhost", 8080);
 			socket = new Socket("192.168.77.1", 8080);
 			
@@ -111,6 +112,8 @@ public class Client {
 			if(message.equals("RENDER")) {
 				Global.tickCounter ++;
 				keyProcessor.informServer();
+				if(Global.map.player != null && Global.map.player.playerEntity.isDead())
+					System.exit(0);
 				rend.repaint();
 			} else {
 				int globalId = Integer.parseInt(message);
@@ -127,12 +130,16 @@ public class Client {
 					
 						en.setParametr(key, value);
 					
-						if(key.equals(Constants.PARAM_MINE) && value.equals("true") )
+						if(key.equals(Constants.PARAM_MINE) && value.equals("true") ) {
 							Global.map.player = new Player(en);
+						}
 					}
 					en.setParametr(Constants.PARAM_TICK, Global.tickCounter+"");
 				
 					Global.map.moveEntity(en, en.getPosition().y, en.getPosition().x);
+					
+					if(en.isDead())
+						Global.map.removeEntity(en);
 				}
 			}
 		}

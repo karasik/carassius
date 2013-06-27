@@ -49,7 +49,6 @@ public class MouseProcessor implements MouseListener {
 			ArrayList<Collection<Entity>> list =
 					Global.map.getEntitiesToIterate();
 			
-			//for(Entity entity : Global.map.entities.values()) {
 			for(Collection<Entity> collection : list) {
 				for(Entity entity : collection) {
 			
