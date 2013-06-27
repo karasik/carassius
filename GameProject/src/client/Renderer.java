@@ -80,8 +80,11 @@ class DrawPanel extends JPanel {
 							entity.getPosition().y - Global.cameraPosition.y + Global.tileHeight/2) <= distance;
 					boolean upToDate = entity.getTick() == Global.tickCounter-1;
 					boolean isTile = entity.isTile();
+					if(visible)
+						entity.setExplored(true);
+					boolean isExplored = entity.isExplored();
 					
-					entity.tile.draw(g, rect, Global.visibleFrame, visible, upToDate, isTile);
+					entity.tile.draw(g, rect, Global.visibleFrame, visible, upToDate, isTile, isExplored);
 				}
 			}
 		}	

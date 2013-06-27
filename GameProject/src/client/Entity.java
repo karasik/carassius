@@ -85,6 +85,15 @@ public class Entity {
 		return s != null && !Boolean.parseBoolean(s);
 	}
 	
+	boolean isExplored() {
+		String s = getParametr(Constants.PARAM_EXPLORED);
+		return s != null && Boolean.parseBoolean(s);
+	}
+	
+	void setExplored(boolean b) {
+		setParametr(Constants.PARAM_EXPLORED, b+"");
+	}
+	
 	void updatePlayerPosition() {
 		if(getParametr(Constants.PARAM_MINE).equals("true")) {
 			Global.cameraPosition = getPosition();

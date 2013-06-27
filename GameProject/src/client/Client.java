@@ -64,8 +64,8 @@ public class Client {
 		
 		Socket socket = null;
 		try {
-			//socket = new Socket("localhost", 8080);
-			socket = new Socket("192.168.77.1", 8080);
+			socket = new Socket("localhost", 8080);
+//			socket = new Socket("192.168.77.1", 8080);
 			
 			Global.socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			Global.socketWriter = new PrintWriter( new OutputStreamWriter( socket.getOutputStream()), true );
@@ -95,6 +95,7 @@ public class Client {
 						en.setParametr(key, value);
 					}
 					en.setParametr(Constants.PARAM_TICK, Global.tickCounter+"");
+					en.setExplored(false);
 					
 					list.add(en);
 				}
@@ -137,8 +138,10 @@ public class Client {
 				
 					Global.map.moveEntity(en, en.getPosition().y, en.getPosition().x);
 					
-					if(en.isDead())
+					if(en.isDead()) {
+//						System.out.println(en.globalId);
 						Global.map.removeEntity(en);
+					}
 				}
 			}
 		}

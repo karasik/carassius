@@ -65,8 +65,8 @@ public class MouseProcessor implements MouseListener {
 			}
 		}
 		
-		System.out.println(id);
-		System.out.println(type);
+//		System.out.println(id);
+//		System.out.println(type);
 		if(id != -1) {
 			synchronized (Global.socketWriter) {
 				Global.socketWriter.println("m " + id);
