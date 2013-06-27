@@ -65,7 +65,11 @@ public class Client {
 		Socket socket = null;
 		try {
 			socket = new Socket("localhost", 8080);
+<<<<<<< HEAD
 //			socket = new Socket("192.168.77.1", 8080);
+=======
+			//socket = new Socket("192.168.77.1", 8080);
+>>>>>>> master
 			
 			Global.socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			Global.socketWriter = new PrintWriter( new OutputStreamWriter( socket.getOutputStream()), true );
