@@ -11,7 +11,6 @@ public class Server {
 	public Server(int n, int m) {
 		Map.initialize(n, m);
 		playerSockets = new ArrayList<Socket>();
-
 	}
 
 	public void start() throws IOException, InterruptedException {

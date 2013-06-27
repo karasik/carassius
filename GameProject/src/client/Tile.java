@@ -44,8 +44,6 @@ public class Tile {
 		
 		TexturePaint paint = new TexturePaint(image, rect);
 		
-		
-		
 		Composite originalComposite = g2.getComposite();
 		if(!visible) {
 			float alpha = 0.5f;
