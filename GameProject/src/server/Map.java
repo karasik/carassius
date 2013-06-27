@@ -62,7 +62,6 @@ public class Map {
 		Warrior c = new Warrior(i, x, y);
 
 		players.add(i, (Player) c);
-		tileMatrix[x][y].addCreature((Creature) c);
 	}
 	
 	public void addArcher(int i) {
@@ -70,7 +69,6 @@ public class Map {
 		Archer c = new Archer(i, x, y);
 
 		players.add(i, (Player) c);
-		tileMatrix[x][y].addCreature((Creature) c);
 	}
 
 	public Player getPlayer(int i) {

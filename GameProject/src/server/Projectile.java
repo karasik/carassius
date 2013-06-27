@@ -93,14 +93,12 @@ public class Projectile extends Entity {
 	}
 	
 	public String getParameterStrings() {
-		if (!getDeathSent()) {
-			if (!isAlive()) {
-				setDeathSent(true);
-				this.putParameter("alive", "false");
-			}
-			return super.getParameterStrings();
+		if (getDeathSent()) return "";
+		if (!isAlive()) {
+			setDeathSent(true);
+			this.putParameter("alive", "false");
 		}
-		return "";
+		return super.getParameterStrings();
 	}
 
 	private void setDeathSent(boolean b) {
