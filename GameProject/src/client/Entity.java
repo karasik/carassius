@@ -81,7 +81,7 @@ public class Entity {
 	}
 	
 	boolean isDead() {
-		String s = getParametr(Constants.PARAM_TILE);
+		String s = getParametr(Constants.PARAM_ALIVE);
 		return s != null && !Boolean.parseBoolean(s);
 	}
 	
