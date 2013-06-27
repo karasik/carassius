@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -40,6 +42,9 @@ class DrawPanel extends JPanel {
 	
 	private void drawMap(Graphics g) {
 		
+		if(Global.map == null)
+			return;
+		
 		if(Global.map.player != null)
 			Global.map.player.playerEntity.updatePlayerPosition();	
 		
@@ -54,30 +59,33 @@ class DrawPanel extends JPanel {
 		Set<Integer> set = new TreeSet<Integer>();
 		synchronized (Global.map) {
 			
-			long time = System.nanoTime();
+			ArrayList<Collection<Entity>> list =
+					Global.map.getEntitiesToIterate();
 			
-			for(Entity entity : Global.map.entities.values()) {
-				if(entity.tile == null) {
-					entity.setTile(Global.tiles);
+			//for(Entity entity : Global.map.entities.values()) {
+			for(Collection<Entity> collection : list) {
+				for(Entity entity : collection) {
+					if(entity.tile == null) {
+						entity.setTile(Global.tiles);
+					}
+					
+					Rectangle rect = new Rectangle(
+							entity.getPositionRect().x + plus.x,
+							entity.getPositionRect().y + plus.y,
+							entity.getPositionRect().width,
+							entity.getPositionRect().height
+							);
+					
+					double distance = Global.distanceOfView * Global.tileHeight + 1e-6;
+					boolean visible = Math.hypot(entity.getPosition().x - Global.cameraPosition.x + Global.tileWidth/2, 
+							entity.getPosition().y - Global.cameraPosition.y + Global.tileHeight/2) <= distance;
+					boolean upToDate = entity.getTick() == Global.tickCounter-1;
+					boolean isTile = entity.isTile();
+					
+					entity.tile.draw(g, rect, Global.visibleFrame, visible, upToDate, isTile);
 				}
-				
-				Rectangle rect = new Rectangle(
-						entity.getPositionRect().x + plus.x,
-						entity.getPositionRect().y + plus.y,
-						entity.getPositionRect().width,
-						entity.getPositionRect().height
-						);
-				
-				double distance = Global.distanceOfView * Global.tileHeight + 1e-6;
-				boolean visible = Math.hypot(entity.getPosition().x - Global.cameraPosition.x + Global.tileWidth/2, 
-						entity.getPosition().y - Global.cameraPosition.y + Global.tileHeight/2) <= distance;
-				boolean upToDate = entity.getTick() == Global.tickCounter-1;
-				boolean isTile = entity.isTile();
-				
-				entity.tile.draw(g, rect, Global.visibleFrame, visible, upToDate, isTile);
 			}
 		}	
-			//System.out.println(System.nanoTime() - time + " ns");
 		
 		
 		Graphics2D g2 = (Graphics2D)g;

@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 class Global {
 	
@@ -17,6 +18,8 @@ class Global {
 	static int tileWidth = 50;
 	static int tileHeight = 50;
 	static int distanceOfView = 8;
+	static int chunkSize = 8;
+	static int chunksFrameToLoad = 1;
 	
 	static int tickCounter = 0;
 	
@@ -50,7 +53,7 @@ public class Client {
 		
 		Global.cameraPosition = new Point(0, 0);
 		Global.visibleFrame = new Rectangle(0, 0, 640, 480);
-		Global.map = new Map();
+		
 		
 		Renderer rend = new Renderer();
 		rend.setVisible(true);
@@ -62,7 +65,7 @@ public class Client {
 		Socket socket = null;
 		try {
 			socket = new Socket("localhost", 8080);
-			//socket = new Socket("89.249.160.150", 8080);
+			
 			Global.socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			Global.socketWriter = new PrintWriter( new OutputStreamWriter( socket.getOutputStream()), true );
 		} catch (IOException e1) {
@@ -74,11 +77,13 @@ public class Client {
 			int ysize = Integer.parseInt(Global.socketReader.readLine());
 			int xsize = Integer.parseInt(Global.socketReader.readLine());
 			
+			ArrayList<Entity> list = new ArrayList<Entity>();
+			
 			for(int y =0 ; y<ysize; y++) {
 				for(int x =0 ; x < xsize; x++) {
 					int globalId = Integer.parseInt(Global.socketReader.readLine());
 					
-					Entity en = Global.map.getEntity(globalId);
+					Entity en = new Entity(globalId);
 					
 					int N = Integer.parseInt(Global.socketReader.readLine());
 				
@@ -89,8 +94,12 @@ public class Client {
 						en.setParametr(key, value);
 					}
 					en.setParametr(Constants.PARAM_TICK, Global.tickCounter+"");
+					
+					list.add(en);
 				}
 			}
+			
+			Global.map = new Map(ysize, xsize, list);
 			
 			Global.tickCounter++;
 		}
@@ -122,6 +131,7 @@ public class Client {
 					}
 					en.setParametr(Constants.PARAM_TICK, Global.tickCounter+"");
 				
+					Global.map.moveEntity(en, en.getPosition().y, en.getPosition().x);
 				}
 			}
 		}
